@@ -4,9 +4,9 @@ var famous = require('famous');
 var DOMElement = famous.domRenderables.DOMElement;
 var FamousEngine = famous.core.FamousEngine;
 var Node = famous.core.Node;
-var Size = famous.components.Size;
+var clock = FamousEngine.getClock();
 
-var DOT_SIZE = 24;
+var DOT_SIZE = 200;
 
 // Boilerplate
 FamousEngine.init();
@@ -19,6 +19,7 @@ function Dot(step) {
 
     // Center dot.
     this
+        .setOrigin(0.5, 0.5, 0.5)
         .setMountPoint(0.5, 0.5, 0.5)
         .setAlign(0.5, 0.5, 0.5)
         .setSizeMode('absolute', 'absolute', 'absolute')
@@ -47,8 +48,10 @@ var dot = new Dot();
 
 scene.addChild(dot);
 
-var dotSize = new Size(dot);
+var dotScale = new famous.components.Scale(dot);
 
-dotSize
-    .setMode('absolute', 'absolute', 'absolute')
-    .setAbsolute(100, 100, 100, { duration: 1000 });
+dotScale.set(0.1, 0.1, 0.1);
+
+clock.setTimeout(function() {
+    dotScale.set(1, 1, 1, { duration: 4000 });
+}, 500);
