@@ -4,8 +4,13 @@ var famous = require('famous');
 var DOMElement = famous.domRenderables.DOMElement;
 var FamousEngine = famous.core.FamousEngine;
 var Node = famous.core.Node;
+var Size = famous.components.Size;
 
 var DOT_SIZE = 24;
+
+// Boilerplate
+FamousEngine.init();
+var scene = FamousEngine.createScene();
 
 // Dots are nodes.
 // They have a DOMElement attached to them by default.
@@ -40,8 +45,10 @@ Dot.prototype.constructor = Dot;
 
 var dot = new Dot();
 
-// Boilerplate
-FamousEngine.init();
-var scene = FamousEngine.createScene();
-
 scene.addChild(dot);
+
+var dotSize = new Size(dot);
+
+dotSize
+    .setMode('absolute', 'absolute', 'absolute')
+    .setAbsolute(100, 100, 100, { duration: 1000 });
