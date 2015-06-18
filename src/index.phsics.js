@@ -10,11 +10,10 @@ var Vec3 = famous.math.Vec3;
 var Mesh = famous.webglRenderables.Mesh;
 var Color = famous.utilities.Color;
 var Circle = famous.webglGeometries.Circle;
-//var Triangle = famous.webglGeometries.Triangle;
 var geometry = new Circle();
 
 var colors = [ [151, 131, 242], [47, 189, 232] ];
-var totalCols = 1000;
+var totalCols = 100;
 var totalRows = 100;
 //var pe = new PhysicsEngine();
 
@@ -51,8 +50,7 @@ function createColorStep(step, isDom) {
 
 function Dot (node, i, sceneSize) {
     node.setProportionalSize(1 / totalCols, 1 / totalRows)
-        .setDifferentialSize(-4, -4)
-        .setPosition(Math.random() * 1000, Math.random() * 1000, 0);
+        .setDifferentialSize(-4, -4);
 
     new Mesh(node).setGeometry(geometry)
                   .setBaseColor(new Color(createColorStep(i / 18)));
