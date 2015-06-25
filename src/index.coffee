@@ -5,38 +5,51 @@ DOMElement = famous.domRenderables.DOMElement
 FamousEngine = famous.core.FamousEngine
 Node = famous.core.Node
 
-dotSize = 200
-clock = FamousEngine.getClock()
-FamousEngine.init()
-scene = FamousEngine.createScene()
+class Vertex extends Node
+  defaultSize: 200
 
-# Dots are nodes.
-# They have a DOMElement attached to them by default.
-
-class Dot extends Node
-  constructor: (step) ->
+  constructor: (args) ->
     super
+    { x, y, z, @size } = args
+    @size or= @defaultSize
     # Center dot.
     @setOrigin(0.5, 0.5, 0.5)
-      .setMountPoint(0.5, 0.5, 0.5)
-      .setAlign(0.5, 0.5, 0.5)
-      .setSizeMode('absolute', 'absolute', 'absolute')
-      .setAbsoluteSize dotSize, dotSize, dotSize
+    @setMountPoint(0.5, 0.5, 0.5)
+    @setAlign(0.5, 0.5, 0.5)
+    @setSizeMode('absolute', 'absolute', 'absolute')
+    @setAbsoluteSize @size, @size, @size
+
+    # dotScale = new famous.components.Scale dot
+    # dotScale.set 0.1, 0.1, 0.1
 
     # Add the DOMElement (DOMElements are components).
     @el = new DOMElement @,
       properties:
         background: 'blue'
         borderRadius: '100%'
-    # Add the Position component.
-    # The position component allows us to transition between different states
-    # instead of instantly setting the final translation.
-    # this.position = new Position(this);
 
-dot = new Dot
-scene.addChild dot
-dotScale = new famous.components.Scale dot
-dotScale.set 0.1, 0.1, 0.1
-clock.setTimeout (->
-  dotScale.set 1, 1, 1, duration: 4000
-), 500
+class World
+  constructor: ->
+    clock = FamousEngine.getClock()
+    FamousEngine.init()
+
+  layout: (args) ->
+    { root, nodes, edges } = args
+    scene = FamousEngine.createScene()
+    @famousRoot = scene.addChild()
+    rootVertex = new Vertex x: 0, y:0
+    @famousRoot.addChild rootVertex
+
+
+nodes = for i in [0..50]
+  "id#{i}"
+root = "id0"
+edges = for node in nodes
+  [root, node]
+
+#console.log "nodes", nodes
+#console.log "edges", edges
+
+new World()
+  .layout { root, nodes, edges }
+
