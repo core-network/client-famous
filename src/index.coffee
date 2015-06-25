@@ -5,12 +5,18 @@ DOMElement = famous.domRenderables.DOMElement
 FamousEngine = famous.core.FamousEngine
 Node = famous.core.Node
 
+π = Math.PI
+{sin, cos} = Math
+
 class Vertex extends Node
   defaultSize: 50
 
   constructor: (args) ->
     super
-    { @x, @y, @z, @size, @id } = args
+    { @x, @y, @z, @radius, @angle, @size, @id } = args
+    if @radius? and @angle?
+      @x = @radius * cos @angle
+      @y = @radius * sin @angle
     @size or= @defaultSize
     # Center dot.
     @setOrigin(0.5, 0.5, 0.5)
@@ -46,7 +52,10 @@ class World
     rootVertex = new Vertex x: 0, y:0, id: rootId
     @root.addChild rootVertex
     for node, i in nodes
-      @root.addChild new Vertex x: (100*i) % 1000, y: (100*i) % 1000, id: node
+      @root.addChild new Vertex
+        radius: 100
+        angle: i * 2*π / 10
+        id: node
 
 
 nodes = for i in [0..50]
