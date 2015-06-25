@@ -50,6 +50,7 @@ class Edge extends Node
     @setSizeMode('absolute', 'absolute', 'absolute')
     @setAbsoluteSize @size, @size, @size
     @setPosition @start.x, @start.y, @start.z
+    @setRotation 0, 0, @end.angle
     @length = sqrt(
       (@start.x - @end.x) * (@start.x - @end.x) +
       (@start.y - @end.y) * (@start.y - @end.y)
