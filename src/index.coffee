@@ -114,6 +114,7 @@ class World
     rootVertex = new Vertex x: 0, y:0, id: @rootId
     @nodes[@rootId] = rootVertex
     @root.addChild rootVertex
+
     # first ring
     for node, i in @nodes[0...6]
       vertex =  new Vertex
@@ -132,13 +133,22 @@ class World
       @root.addChild vertex
       @nodes[node] = vertex
 
+    # third ring
+    for node, i in @nodes[18...36]
+      vertex =  new Vertex
+        radius: 300
+        angle: Hex.sector_angle(i/3) - Hex.SECTOR_RADIANS*2/3
+        id: node
+      @root.addChild vertex
+      @nodes[node] = vertex
+
     for edge in @edges
       [startId, endId] = edge
       @root.addChild new Edge
         start: @nodes[startId]
         end: @nodes[endId]
 
-nodes = for i in [0..18]
+nodes = for i in [0..36]
   "id#{i}"
 rootId = nodes.shift()
 edges = for node in nodes
