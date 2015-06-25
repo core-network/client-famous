@@ -6,7 +6,7 @@ FamousEngine = famous.core.FamousEngine
 Node = famous.core.Node
 
 π = Math.PI
-{sin, cos} = Math
+{sin, cos, sqrt} = Math
 
 class Vertex extends Node
   defaultSize: 50
@@ -40,12 +40,42 @@ class Vertex extends Node
         lineHeight: "#{@size}px"
         fontFamily: "sans"
 
+class Edge extends Node
+  constructor: (args) ->
+    super
+    {@start, @end} = args
+    @setOrigin(0.5, 0.5, 0.5)
+    @setMountPoint(0.5, 0.5, 0.5)
+    @setAlign(0.5, 0.5, 0.5)
+    @setSizeMode('absolute', 'absolute', 'absolute')
+    @setAbsoluteSize @size, @size, @size
+    @setPosition @start.x, @start.y, @start.z
+    @length = sqrt(
+      (@start.x - @end.x) * (@start.x - @end.x) +
+      (@start.y - @end.y) * (@start.y - @end.y)
+    )
+    @curve = @length / 5
+    @el = new DOMElement @,
+      content: @bezier()
+
+  bezier: ->
+    """
+      <svg>
+        <path
+          d="M0 0 C #{@curve} #{@curve}, #{@length - @curve} #{@curve}, #{@length} #{0}"
+          stroke="black"
+          fill="transparent"
+        />
+      </svg>
+    """
+
 class World
   constructor: ->
     clock = FamousEngine.getClock()
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @root = scene.addChild()
+    @nodes = {}
     # @root.addComponent
     #   XXX do this is right order... promises?
     #   onMount: @_layout.bind @
@@ -56,19 +86,31 @@ class World
 
   _layout: ->
     rootVertex = new Vertex x: 0, y:0, id: @rootId
+    @nodes[@rootId] = rootVertex
     @root.addChild rootVertex
     # first ring
     for node, i in @nodes[0...10]
-      @root.addChild new Vertex
+      vertex =  new Vertex
         radius: 100
         angle: i * 2*π / 10
         id: node
+      @root.addChild vertex
+      @nodes[node] = vertex
+
     # second ring
     for node, i in @nodes[10...30]
-      @root.addChild new Vertex
+      vertex =  new Vertex
         radius: 200
         angle: i * 2*π / 20
         id: node
+      @root.addChild vertex
+      @nodes[node] = vertex
+
+    for edge in @edges
+      [startId, endId] = edge
+      @root.addChild new Edge
+        start: @nodes[startId]
+        end: @nodes[endId]
 
 nodes = for i in [0..30]
   "id#{i}"
