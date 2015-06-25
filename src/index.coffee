@@ -96,14 +96,6 @@ class World
     { @rootId, @nodes, @edges } = args
     @_layout()
 
-  sector_origin: ->
-    noon = CIRCLE_RADIANS * 0.75    # "12 o'clock", where radians start at "3 o'clock"
-    first_sector_radians = ( @config('first-sector-degrees') / 360 ) * CIRCLE_RADIANS
-    (noon + first_sector_radians) % CIRCLE_RADIANS
-
-  sector_angle: (sector) ->
-    sector * SECTOR_RADIANS + @sector_origin()
-
   _layout: ->
     rootVertex = new Vertex x: 0, y:0, id: @rootId
     @nodes[@rootId] = rootVertex
