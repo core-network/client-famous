@@ -70,7 +70,24 @@ class Edge extends Node
       </svg>
     """
 
+class Hex
+  @SECTORS = 6
+  @CIRCLE_RADIANS = 2*π
+  @SECTOR_RADIANS = @CIRCLE_RADIANS / @SECTORS
+  @FIRST_SECTOR_DEGREES = 60
+
+  @sector_origin: ->
+    noon = @CIRCLE_RADIANS * 0.75    # "12 o'clock", where radians start at "3 o'clock"
+    first_sector_radians = ( @FIRST_SECTOR_DEGREES / 360 ) * @CIRCLE_RADIANS
+    (noon + first_sector_radians) % @CIRCLE_RADIANS
+
+  @sector_angle: (sector) ->
+    sector * @SECTOR_RADIANS + @sector_origin()
+
 class World
+  CIRCLE_RADIANS = 2*π
+  firstSectorDegrees = 60
+
   constructor: ->
     clock = FamousEngine.getClock()
     FamousEngine.init()
@@ -85,24 +102,32 @@ class World
     { @rootId, @nodes, @edges } = args
     @_layout()
 
+  sector_origin: ->
+    noon = CIRCLE_RADIANS * 0.75    # "12 o'clock", where radians start at "3 o'clock"
+    first_sector_radians = ( @config('first-sector-degrees') / 360 ) * CIRCLE_RADIANS
+    (noon + first_sector_radians) % CIRCLE_RADIANS
+
+  sector_angle: (sector) ->
+    sector * SECTOR_RADIANS + @sector_origin()
+
   _layout: ->
     rootVertex = new Vertex x: 0, y:0, id: @rootId
     @nodes[@rootId] = rootVertex
     @root.addChild rootVertex
     # first ring
-    for node, i in @nodes[0...10]
+    for node, i in @nodes[0...6]
       vertex =  new Vertex
         radius: 100
-        angle: i * 2*π / 10
+        angle: Hex.sector_angle i
         id: node
       @root.addChild vertex
       @nodes[node] = vertex
 
     # second ring
-    for node, i in @nodes[10...30]
+    for node, i in @nodes[6...18]
       vertex =  new Vertex
         radius: 200
-        angle: i * 2*π / 20
+        angle: Hex.sector_angle(i/2) - Hex.SECTOR_RADIANS/2
         id: node
       @root.addChild vertex
       @nodes[node] = vertex
@@ -113,7 +138,7 @@ class World
         start: @nodes[startId]
         end: @nodes[endId]
 
-nodes = for i in [0..30]
+nodes = for i in [0..18]
   "id#{i}"
 rootId = nodes.shift()
 edges = for node in nodes
