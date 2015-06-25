@@ -55,7 +55,7 @@ class Edge extends Node
       (@start.x - @end.x) * (@start.x - @end.x) +
       (@start.y - @end.y) * (@start.y - @end.y)
     )
-    @curve = @length / 5
+    @curve = @length / 9
     @el = new DOMElement @,
       content: @bezier()
 
