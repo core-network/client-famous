@@ -6,11 +6,11 @@ FamousEngine = famous.core.FamousEngine
 Node = famous.core.Node
 
 class Vertex extends Node
-  defaultSize: 200
+  defaultSize: 50
 
   constructor: (args) ->
     super
-    { x, y, z, @size } = args
+    { @x, @y, @z, @size, @id } = args
     @size or= @defaultSize
     # Center dot.
     @setOrigin(0.5, 0.5, 0.5)
@@ -18,38 +18,46 @@ class Vertex extends Node
     @setAlign(0.5, 0.5, 0.5)
     @setSizeMode('absolute', 'absolute', 'absolute')
     @setAbsoluteSize @size, @size, @size
+    @setPosition @x, @y, @z
 
     # dotScale = new famous.components.Scale dot
     # dotScale.set 0.1, 0.1, 0.1
 
     # Add the DOMElement (DOMElements are components).
     @el = new DOMElement @,
+      content: @id
       properties:
         background: 'blue'
         borderRadius: '100%'
+        color: 'white'
+        textAlign: 'center'
+        lineHeight: "#{@size}px"
+        fontFamily: "sans"
 
 class World
   constructor: ->
     clock = FamousEngine.getClock()
     FamousEngine.init()
+    scene = FamousEngine.createScene()
+    @root = scene.addChild()
 
   layout: (args) ->
-    { root, nodes, edges } = args
-    scene = FamousEngine.createScene()
-    @famousRoot = scene.addChild()
-    rootVertex = new Vertex x: 0, y:0
-    @famousRoot.addChild rootVertex
+    { rootId, nodes, edges } = args
+    rootVertex = new Vertex x: 0, y:0, id: rootId
+    @root.addChild rootVertex
+    for node, i in nodes
+      @root.addChild new Vertex x: (100*i) % 1000, y: (100*i) % 1000, id: node
 
 
 nodes = for i in [0..50]
   "id#{i}"
-root = "id0"
+rootId = "id0"
 edges = for node in nodes
-  [root, node]
+  [rootId, node]
 
 #console.log "nodes", nodes
 #console.log "edges", edges
 
 new World()
-  .layout { root, nodes, edges }
+  .layout { rootId, nodes, edges }
 
