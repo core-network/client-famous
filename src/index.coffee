@@ -17,11 +17,11 @@ class Vertex extends Node
     if @radius? and @angle?
       @x = @radius * cos @angle
       @y = @radius * sin @angle
-    @size or= @defaultSize
-    @setOrigin(0.5, 0.5, 0.5)
-    @setMountPoint(0.5, 0.5, 0.5)
-    @setAlign(0.5, 0.5, 0.5)
-    @setSizeMode('absolute', 'absolute', 'absolute')
+    @size ?= @defaultSize
+    @setOrigin 0.5, 0.5, 0.5
+    @setMountPoint 0.5, 0.5, 0.5
+    @setAlign 0.5, 0.5, 0.5
+    @setSizeMode 'absolute', 'absolute', 'absolute'
     @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
 
@@ -42,10 +42,10 @@ class Edge extends Node
   constructor: (args) ->
     super
     {@start, @end} = args
-    @setOrigin(0.5, 0.5, 0.5)
-    @setMountPoint(0.5, 0.5, 0.5)
-    @setAlign(0.5, 0.5, 0.5)
-    @setSizeMode('absolute', 'absolute', 'absolute')
+    @setOrigin 0.5, 0.5, 0.5
+    @setMountPoint 0.5, 0.5, 0.5
+    @setAlign 0.5, 0.5, 0.5
+    @setSizeMode 'absolute', 'absolute', 'absolute'
     @setAbsoluteSize @size, @size, @size
     @setPosition @start.x, @start.y, @start.z
     @setRotation 0, 0, @end.angle
@@ -68,19 +68,19 @@ class Edge extends Node
       </svg>
     """
 
-class Hex
+class Sector
   @SECTORS = 6
   @CIRCLE_RADIANS = 2*π
   @SECTOR_RADIANS = @CIRCLE_RADIANS / @SECTORS
   @FIRST_SECTOR_DEGREES = 60
 
-  @sector_origin: ->
+  @origin: ->
     noon = @CIRCLE_RADIANS * 0.75    # "12 o'clock", where radians start at "3 o'clock"
     first_sector_radians = ( @FIRST_SECTOR_DEGREES / 360 ) * @CIRCLE_RADIANS
     (noon + first_sector_radians) % @CIRCLE_RADIANS
 
-  @sector_angle: (sector) ->
-    sector * @SECTOR_RADIANS + @sector_origin()
+  @angle: (sector) ->
+    sector * @SECTOR_RADIANS + @origin()
 
 class World
   constructor: ->
@@ -105,7 +105,7 @@ class World
     for node, i in @nodes[0...6]
       vertex =  new Vertex
         radius: 100
-        angle: Hex.sector_angle i
+        angle: Sector.angle i
         id: node
       @root.addChild vertex
       @nodes[node] = vertex
@@ -114,7 +114,7 @@ class World
     for node, i in @nodes[6...18]
       vertex =  new Vertex
         radius: 200
-        angle: Hex.sector_angle(i/2) - Hex.SECTOR_RADIANS/2
+        angle: Sector.angle(i/2) - Sector.SECTOR_RADIANS/2
         id: node
       @root.addChild vertex
       @nodes[node] = vertex
@@ -123,7 +123,7 @@ class World
     for node, i in @nodes[18...36]
       vertex =  new Vertex
         radius: 300
-        angle: Hex.sector_angle(i/3) - Hex.SECTOR_RADIANS*2/3
+        angle: Sector.angle(i/3) - Sector.SECTOR_RADIANS*2/3
         id: node
       @root.addChild vertex
       @nodes[node] = vertex
