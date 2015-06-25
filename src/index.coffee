@@ -18,7 +18,6 @@ class Vertex extends Node
       @x = @radius * cos @angle
       @y = @radius * sin @angle
     @size or= @defaultSize
-    # Center dot.
     @setOrigin(0.5, 0.5, 0.5)
     @setMountPoint(0.5, 0.5, 0.5)
     @setAlign(0.5, 0.5, 0.5)
@@ -29,8 +28,7 @@ class Vertex extends Node
     # dotScale = new famous.components.Scale dot
     # dotScale.set 0.1, 0.1, 0.1
 
-    # Add the DOMElement (DOMElements are components).
-    @el = new DOMElement @,
+    new DOMElement @,
       content: @id
       properties:
         background: 'blue'
@@ -56,14 +54,14 @@ class Edge extends Node
       (@start.y - @end.y) * (@start.y - @end.y)
     )
     @curve = @length / 9
-    @el = new DOMElement @,
+    new DOMElement @,
       content: @bezier()
 
   bezier: ->
     """
       <svg>
         <path
-          d="M0 0 C #{@curve} #{@curve}, #{@length - @curve} #{@curve}, #{@length} #{0}"
+          d="M 0 0 C #{@curve} #{@curve}, #{@length - @curve} #{@curve}, #{@length} #{0}"
           stroke="black"
           fill="transparent"
         />
@@ -85,11 +83,7 @@ class Hex
     sector * @SECTOR_RADIANS + @sector_origin()
 
 class World
-  CIRCLE_RADIANS = 2*π
-  firstSectorDegrees = 60
-
   constructor: ->
-    clock = FamousEngine.getClock()
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @root = scene.addChild()
