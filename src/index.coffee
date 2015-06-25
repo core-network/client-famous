@@ -46,21 +46,33 @@ class World
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @root = scene.addChild()
+    # @root.addComponent
+    #   XXX do this is right order... promises?
+    #   onMount: @_layout.bind @
 
   layout: (args) ->
-    { rootId, nodes, edges } = args
-    rootVertex = new Vertex x: 0, y:0, id: rootId
+    { @rootId, @nodes, @edges } = args
+    @_layout()
+
+  _layout: ->
+    rootVertex = new Vertex x: 0, y:0, id: @rootId
     @root.addChild rootVertex
-    for node, i in nodes
+    # first ring
+    for node, i in @nodes[0...10]
       @root.addChild new Vertex
         radius: 100
         angle: i * 2*π / 10
         id: node
+    # second ring
+    for node, i in @nodes[10...30]
+      @root.addChild new Vertex
+        radius: 200
+        angle: i * 2*π / 20
+        id: node
 
-
-nodes = for i in [0..50]
+nodes = for i in [0..30]
   "id#{i}"
-rootId = "id0"
+rootId = nodes.shift()
 edges = for node in nodes
   [rootId, node]
 
