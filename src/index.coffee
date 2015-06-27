@@ -14,7 +14,9 @@ class Vertex extends Node
   constructor: (args) ->
     super
     { @x, @y, @z, @radius, @angle, @size, @id } = args
+    @z ?= 0
     if @radius? and @angle?
+      throw new Error if @x? or @y?
       @x = @radius * cos @angle
       @y = @radius * sin @angle
     @size ?= @defaultSize
@@ -47,7 +49,7 @@ class Edge extends Node
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
     @setAbsoluteSize @size, @size, @size
-    @setPosition @start.x, @start.y, @start.z
+    @setPosition @start.x, @start.y, @start.z-100
     @setRotation 0, 0, @end.angle
     @length = sqrt(
       (@start.x - @end.x) * (@start.x - @end.x) +
