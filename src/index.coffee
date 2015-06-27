@@ -55,18 +55,27 @@ class Edge extends Node
     )
     @curve = @length / 9
     new DOMElement @,
-      content: @bezier()
+      content: @svgCurve()
 
-  bezier: ->
-    """
+  svgCurve: ->
+    data = """
+      M
+        0 0
+      C
+        #{@curve}           #{@curve},
+        #{@length - @curve} #{@curve},
+        #{@length}          0
+      """
+    svg = """
       <svg>
         <path
-          d="M 0 0 C #{@curve} #{@curve}, #{@length - @curve} #{@curve}, #{@length} #{0}"
+          d="#{data}"
           stroke="black"
           fill="transparent"
         />
       </svg>
-    """
+      """
+    svg.replace /\s+/g, ' '
 
 class Sector
   @SECTORS = 6
