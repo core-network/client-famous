@@ -1,5 +1,6 @@
 'use strict'
-famous = require('famous')
+famous = require 'famous'
+{json, log, p, pjson} = require 'lightsaber'
 
 DOMElement = famous.domRenderables.DOMElement
 FamousEngine = famous.core.FamousEngine
@@ -14,6 +15,7 @@ class Vertex extends Node
   constructor: (args) ->
     super
     { @x, @y, @z, @radius, @angle, @size, @id } = args
+    throw new Error unless @id?
     @z ?= 0
     if @radius? and @angle?
       throw new Error if @x? or @y?
@@ -26,9 +28,6 @@ class Vertex extends Node
     @setSizeMode 'absolute', 'absolute', 'absolute'
     @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
-
-    # dotScale = new famous.components.Scale dot
-    # dotScale.set 0.1, 0.1, 0.1
 
     new DOMElement @,
       content: @id
@@ -44,11 +43,12 @@ class Edge extends Node
   constructor: (args) ->
     super
     {@start, @end} = args
+    #    p "start [ID: #{@start?.id}] end [ID: #{@end?.id}]"
+    throw new Error "Missing start [ID: #{@start?.id}] and/or end [ID: #{@end?.id}] in 'args' " unless @start? and @end?
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
-    @setAbsoluteSize @size, @size, @size
     @setPosition @start.x, @start.y, @start.z-100
     @setRotation 0, 0, @end.angle
     @length = sqrt(
@@ -97,63 +97,81 @@ class World
   constructor: ->
     FamousEngine.init()
     scene = FamousEngine.createScene()
-    @root = scene.addChild()
-    @nodes = {}
-    # @root.addComponent
+    @sceneRoot = scene.addChild()
+    # @sceneRoot.addComponent
     #   XXX do this is right order... promises?
     #   onMount: @_layout.bind @
 
-  layout: (args) ->
-    { @rootId, @nodes, @edges } = args
-    @_layout()
+  radialLayout: (args) ->
+    args.sceneRoot ?= @sceneRoot
+    new RadialLayout args
 
-  _layout: ->
-    rootVertex = new Vertex x: 0, y:0, id: @rootId
-    @nodes[@rootId] = rootVertex
-    @root.addChild rootVertex
+class RadialLayout
+  constructor: (args) ->
+    @vertices = {}
+    @render args
+
+  render: (input) ->
+    { @sceneRoot, rootNodeId } = input
+
+    rootVertex = new Vertex x: 0, y:0, id: rootNodeId
+    @addVertex rootVertex
 
     # first ring
-    for node, i in @nodes[0...6]
+    for node, i in input.nodes[0...6]
+      nodeId = node.id
       vertex =  new Vertex
         radius: 100
         angle: Sector.angle i
-        id: node
-      @root.addChild vertex
-      @nodes[node] = vertex
+        id: nodeId
+      @addVertex vertex
 
     # second ring
-    for node, i in @nodes[6...18]
+    for node, i in input.nodes[6...18]
+      nodeId = node.id
       vertex =  new Vertex
         radius: 200
         angle: Sector.angle(i/2) - Sector.SECTOR_RADIANS/2
-        id: node
-      @root.addChild vertex
-      @nodes[node] = vertex
+        id: nodeId
+      @addVertex vertex
 
     # third ring
-    for node, i in @nodes[18...36]
+    for node, i in input.nodes[18...36]
+      nodeId = node.id
       vertex =  new Vertex
         radius: 300
         angle: Sector.angle(i/3) - Sector.SECTOR_RADIANS*2/3
-        id: node
-      @root.addChild vertex
-      @nodes[node] = vertex
+        id: nodeId
+      @addVertex vertex
 
-    for edge in @edges
+    for edge in input.edges
       [startId, endId] = edge
-      @root.addChild new Edge
-        start: @nodes[startId]
-        end: @nodes[endId]
+      @sceneRoot.addChild new Edge
+        start: @getVertex startId
+        end: @getVertex endId
 
-nodes = for i in [0..36]
-  "id#{i}"
-rootId = nodes.shift()
-edges = for node in nodes
-  [rootId, node]
+  addVertex: (vertex) ->
+    @saveVertex vertex
+    @sceneRoot.addChild vertex
 
-#console.log "nodes", nodes
-#console.log "edges", edges
+  saveVertex: (vertex) ->
+    if @vertices[vertex.id]?
+      throw new Error "Vertex with ID #{vertex.id} already exists in @vertices"
+    @vertices[vertex.id] = vertex
 
-new World()
-  .layout { rootId, nodes, edges }
+  getVertex: (vertexId) ->
+    @vertices[vertexId] or throw new Error
 
+main = ->
+  nodes = for i in [1..36]
+    id: "id#{i}"
+  rootNodeId = "id0"
+  edges = for node in nodes when node.id isnt rootNodeId
+    [rootNodeId, node.id]
+
+  #  console.log "nodes", nodes
+  #  console.log "edges", edges
+
+  new World().radialLayout { rootNodeId, nodes, edges }
+
+main()

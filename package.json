@@ -10,7 +10,7 @@
   "scripts": {
     "build": "browserify src/index.coffee -t coffeeify -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > dist/bundle.js",
     "compile": "coffee --output tmp/js/ --compile --bare src/",
-    "dev": "npm run watch & http-server",
+    "dev": "npm run watch & cd dist && http-server",
     "publish": "npm run build && bin/publish",
     "shipit": "npm run test && git push origin head",
     "test": "npm run build",
@@ -27,6 +27,7 @@
     "finalhandler": "^0.3.6",
     "gh-pages": "^0.3.1",
     "jscs": "^1.7.3",
+    "lightsaber": "^0.4.1",
     "uglify-js": "^2.4.15",
     "uglifyify": "^3.0.1",
     "watchify": "^3.1.0"
