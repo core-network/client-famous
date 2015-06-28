@@ -1,8 +1,6 @@
-dist
-public/*.bundle.js
-public/bundle.js
-node_modules
-*.log
-.DS_Store
+/node_modules/
 /tmp/
 /tags
+.DS_Store
+/dist/*.bundle.js
+/dist/bundle.js
