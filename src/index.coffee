@@ -30,14 +30,39 @@ class Vertex extends Node
     @setPosition @x, @y, @z
 
     new DOMElement @,
+      content: @svgDot()
+
+    text = @addChild()
+    new DOMElement text,
       content: @id
+      opacity: 0.9
       properties:
-        background: 'blue'
-        borderRadius: '100%'
-        color: 'white'
-        textAlign: 'center'
+        color: "#9FDAFF"
+        textAlign: 'right'
         lineHeight: "#{@size}px"
         fontFamily: "sans"
+        marginLeft: "#{@size}px"
+
+  svgDot: ->
+    svg = """
+      <svg style="position: relative; top: -50%; left: -50%;">
+        <defs>
+          <filter id="glow" filterUnits="userSpaceOnUse" x="0%" y="0%" width="140%" height="140%">
+            <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
+            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+          </filter>
+        </defs>
+        <circle
+          cx="#{@size}"
+          cy="#{@size}"
+          r="#{@size/2}"
+          fill="#9DDCFA"
+          filter="url(#glow)"
+        />
+      </svg>
+    """
+    svg.replace /\s+/g, ' '
 
 class Edge extends Node
   constructor: (args) ->
@@ -72,7 +97,9 @@ class Edge extends Node
       <svg>
         <path
           d="#{data}"
-          stroke="black"
+          stroke="#73BAE7"
+          stroke-opacity="0.2"
+          stroke-width="5"
           fill="transparent"
         />
       </svg>
