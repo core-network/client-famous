@@ -38,10 +38,11 @@ class Vertex extends Node
       opacity: 0.9
       properties:
         color: "#9FDAFF"
-        textAlign: 'right'
+        textAlign: "left"
         lineHeight: "#{@size}px"
-        fontFamily: "sans"
+        fontFamily: "Open Sans"
         marginLeft: "#{@size}px"
+        paddingLeft: "5px"
 
   svgDot: ->
     svg = """
