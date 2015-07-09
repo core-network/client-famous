@@ -11,7 +11,7 @@ class Edge extends FamousNode
     super
     {@start, @end} = args
     throw new Error "Missing start [ID: #{@start?.id}] and/or end [ID: #{@end?.id}] in 'args' " unless @start? and @end?
-    @id = "#{@start?.id} -> #{@end?.id}"
+    @id = "#{@start.id} -> #{@end.id}"
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
