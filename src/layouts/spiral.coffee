@@ -43,7 +43,7 @@ class SpiralLayout
       @add new Edge { start, end }
 
   addNode: (params) ->
-    if !params.radius?
+    if not params.radius?
       params = merge params, @nextAvailableLocation()
     node = new Node params
     @saveNode node

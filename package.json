@@ -27,6 +27,7 @@
     "famous": "^0.6.2",
     "finalhandler": "^0.3.6",
     "gh-pages": "^0.3.1",
+    "http-server": "^0.8.0",
     "jscs": "^1.7.3",
     "lightsaber": "^0.4.1",
     "lodash": "^3.9.3",
