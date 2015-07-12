@@ -11,5 +11,5 @@ edges = for node in nodes
   start: rootNodeId
   end: node.id
 
-new World().spiralLayout { rootNodeId, nodes, edges }
-# new World().coreBubblesLayout { nodes }
+# new World().spiralLayout { rootNodeId, nodes, edges }
+new World().coreBubblesLayout { nodes }
