@@ -18,36 +18,20 @@ DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
 
 class SpiralLayout
-  constructor: (args) ->
-    @add  = args.add ? throw new Error
+  constructor: ->
     @iterations = 0
     @nodes = {}
-    @layout args
 
-  layout: (input) ->
+  render: (input) ->
     rootNode = if input.rootNodeId
       find(input.nodes, {id: input.rootNodeId}) ? throw new Error "input.nodes does not contain node wih ID #{input.rootNodeId}"
     else
       input.nodes[0]
-    @addNode defaults rootNode, {radius: 0}
-
+    rootNode.radius = 0
+    for node in input.nodes when node isnt rootNode
+      node.set @nextAvailableLocation()
     for edge in input.edges
-      startId = edge.start
-      endId   = edge.end
-      if startId is rootNode.id and @unknownNode endId
-        @addNode id: endId
-
-    for edge in input.edges
-      start = @getNode edge.start
-      end   = @getNode edge.end
-      @add new Edge { start, end }
-
-  addNode: (params) ->
-    if not params.radius?
-      params = merge params, @nextAvailableLocation()
-    node = new Node params
-    @saveNode node
-    @add node
+      edge.render()
 
   nextAvailableLocation: ->
     throw new Error if @iterations++ > MAX_ITERATIONS
@@ -84,19 +68,5 @@ class SpiralLayout
     x = radius * cos angle
     y = radius * sin angle
     {x, y}
-
-  saveNode: (node) ->
-    if @nodes[node.id]?
-      throw new Error "Node with ID #{node.id} already exists in @nodes"
-    @nodes[node.id] = node
-
-  getNode: (nodeId) ->
-    @nodes[nodeId] or throw new Error "unknown node #{nodeId}"
-
-  knownNode: (nodeId) ->
-    @nodes[nodeId]?
-
-  unknownNode: (nodeId) ->
-    not @knownNode nodeId
 
 module.exports = SpiralLayout

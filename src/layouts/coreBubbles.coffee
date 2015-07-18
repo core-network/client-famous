@@ -10,9 +10,6 @@ Particle = famous.physics.Particle
 Vec3 = famous.math.Vec3
 Sphere = famous.physics.Sphere
 
-Node = require '../core/node'
-Edge = require '../core/edge'
-
 π = Math.PI
 { abs, cos, pow, random, round, sin, sqrt } = Math
 
@@ -24,13 +21,11 @@ DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
 
 class CoreBubblesLayout
-  constructor: (args) ->
+  constructor: (args = {}) ->
     @physics = new PhysicsEngine()
-
     options = defaults args,
       sectorsCount: 6
       attractorDistance: 266
-
     {
       @sectorsCount
       @attractorDistance
@@ -46,22 +41,18 @@ class CoreBubblesLayout
     @sectorSize = CIRCLE_RADIANS / @sectorsCount
 
     @attractors = @makeAttractors()
-    console.log "attractors:", @attractors
+    # console.log "attractors:", @attractors
     @collision = new Collision()
     @physics.add @collision
 
-    @add = options.add ? throw new Error
     @nodes = {}
-    @layout options
-
-    FamousEngine.requestUpdateOnNextTick @
 
   onUpdate: (time) =>
     @physics.update time
     for own id, node of @nodes
       position = @physics.getTransform(node.sphere).position
       node.setPosition position[0], position[1], position[2]
-    FamousEngine.requestUpdateOnNextTick @
+    FamousEngine.requestUpdateOnNextTick(@) if @physics.active
 
   makeAttractors: ->
     for harmonic in [0...@sectorsCount]
@@ -70,47 +61,33 @@ class CoreBubblesLayout
       y = @attractorDistance * sin radians
       new Vec3 x, y, 0
 
-  layout: (input) ->
+  render: (input) ->
+    @nodes = input.nodes
     for node in input.nodes
       @addNode node
+    @physics.active = true
+    FamousEngine.requestUpdateOnNextTick @
 
-  addNode: (params) ->
-    node = new Node params
+  addNode: (node) ->
     # throw new Error unless node.sector?
-
+    # todo manage our own physics stuff but don't overwrite others
+    position = node.getPosition() ? new Vec3 random() * Math.PI, random() * Math.PI, 0
     node.sphere = new Sphere
       radius: node.size / 2
       mass: node.size / 10
-      position: new Vec3 random() * Math.PI, random() * Math.PI, 0
+      position: position
     node.spring = new Spring null, [node.sphere],
       period: 10
       dampingRatio: 0.9
       length: 0
-    node.spring.anchor = @attractors[params.sector]
+    node.spring.anchor = @attractors[node.sector]
     @physics.add node.sphere, node.spring
     @collision.addTarget node.sphere
-
-    @saveNode node
-    @add node
 
   rectangular: (radius, angle) ->
     throw new Error unless radius? and angle?
     x = radius * cos angle
     y = radius * sin angle
     {x, y}
-
-  saveNode: (node) ->
-    if @nodes[node.id]?
-      throw new Error "Node with ID #{node.id} already exists in @nodes"
-    @nodes[node.id] = node
-
-  getNode: (nodeId) ->
-    @nodes[nodeId] or throw new Error "unknown node #{nodeId}"
-
-  knownNode: (nodeId) ->
-    @nodes[nodeId]?
-
-  unknownNode: (nodeId) ->
-    not @knownNode nodeId
 
 module.exports = CoreBubblesLayout

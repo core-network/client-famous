@@ -3,6 +3,7 @@ famous = require 'famous'
 
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
+Vec3 = famous.math.Vec3
 
 #π = Math.PI
 {sin, cos, sqrt, abs} = Math
@@ -12,21 +13,12 @@ class Node extends FamousNode
 
   constructor: (args) ->
     super
-    { @x, @y, @z, @radius, @angle, @size, @id } = args
+    @set args
     throw new Error unless @id?
-    @z ?= 0
-    @angle = 0 if @radius is 0
-    if @radius? and @angle?
-      throw new Error if @x? or @y?
-      @x = @radius * cos @angle
-      @y = @radius * sin @angle
-    @size ?= @defaultSize
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
-    @setAbsoluteSize @size, @size, @size
-    @setPosition @x, @y, @z
 
     new DOMElement @,
       content: @svgDot()
@@ -42,6 +34,22 @@ class Node extends FamousNode
         fontFamily: "Open Sans"
         marginLeft: "#{@size}px"
         paddingLeft: "5px"
+
+  set: (data) ->
+    for own key, value of data
+      @[key] = value
+    @z ?= 0
+    @angle = 0 if @radius is 0
+    if @radius? and @angle?
+      # throw new Error if @x? or @y?
+      @x = @radius * cos @angle
+      @y = @radius * sin @angle
+    @x ?= 0
+    @y ?= 0
+    @size ?= @defaultSize
+    @setAbsoluteSize @size, @size, @size
+    @setPosition @x, @y, @z
+    # debugger
 
   svgDot: ->
     svg = """
@@ -63,5 +71,8 @@ class Node extends FamousNode
       </svg>
     """
     svg.replace /\s+/g, ' '
+
+  getPosition: ->
+    new Vec3 @x, @y, @z
 
 module.exports = Node

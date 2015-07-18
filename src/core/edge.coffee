@@ -9,13 +9,19 @@ FamousNode = famous.core.Node
 class Edge extends FamousNode
   constructor: (args) ->
     super
-    {@start, @end} = args
-    throw new Error "Missing start [ID: #{@start?.id}] and/or end [ID: #{@end?.id}] in 'args' " unless @start? and @end?
-    @id = "#{@start.id} -> #{@end.id}"
+    @set args
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
+    @element = new DOMElement @
+
+  set: (args) ->
+    {@start, @end} = args
+    throw new Error "Missing start [ID: #{@start?.id}] and/or end [ID: #{@end?.id}] in 'args' " unless @start? and @end?
+    @id = "#{@start.id} -> #{@end.id}"
+
+  render: ->
     @setPosition @start.x, @start.y, @start.z-100
     @setRotation 0, 0, @end.angle
     @length = sqrt(
@@ -23,8 +29,8 @@ class Edge extends FamousNode
       (@start.y - @end.y) * (@start.y - @end.y)
     )
     @curve = @length / 9
-    new DOMElement @,
-      content: @svgCurve()
+    # debugger
+    @element.setContent @svgCurve()
 
   svgCurve: ->
     data = """

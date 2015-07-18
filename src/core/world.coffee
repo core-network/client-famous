@@ -4,19 +4,21 @@ FamousEngine = famous.core.FamousEngine
 SpiralLayout = require '../layouts/spiral'
 CoreBubblesLayout = require '../layouts/coreBubbles'
 
-class World
-  constructor: ->
+class World # extends Sphere
+  constructor: (data) ->
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @sceneRoot = scene.addChild()
+    @set data
 
-  spiralLayout: (args) ->
-    args.add ?= @add
-    new SpiralLayout args
+  set: (@data) ->
+    @add node for node in @data.nodes
+    @add edge for edge in @data.edges
 
-  coreBubblesLayout: (args) ->
-    args.add ?= @add
-    new CoreBubblesLayout args
+  render: (newLayout) ->
+    @layout?.physics?.active = false
+    newLayout.render @data
+    @layout = newLayout
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode
