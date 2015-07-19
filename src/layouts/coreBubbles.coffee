@@ -63,10 +63,14 @@ class CoreBubblesLayout
 
   render: (input) ->
     @nodes = input.nodes
-    for node in input.nodes
-      @addNode node
     @physics.active = true
-    FamousEngine.requestUpdateOnNextTick @
+    @addNode node for node in input.nodes
+    @hideAll input.edges
+      .then =>
+        FamousEngine.requestUpdateOnNextTick @
+
+  hideAll: (items) ->
+    Promise.all(item.hide { duration: 500 } for item in items)
 
   addNode: (node) ->
     # throw new Error unless node.sector?
@@ -77,8 +81,8 @@ class CoreBubblesLayout
       mass: node.size / 10
       position: position
     node.spring = new Spring null, [node.sphere],
-      period: 10
-      dampingRatio: 0.9
+      period: 3
+      dampingRatio: 0.7
       length: 0
     node.spring.anchor = @attractors[node.sector]
     @physics.add node.sphere, node.spring

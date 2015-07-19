@@ -24,4 +24,6 @@ edges = for node in nodes
 world = new World { rootNode, nodes, edges }
 # world.set { rootNodeId, nodes, edges }
 world.render new SpiralLayout()
-world.render new CoreBubblesLayout()
+window.setTimeout =>
+  world.render new CoreBubblesLayout()
+, 3000

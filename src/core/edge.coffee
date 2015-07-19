@@ -3,6 +3,7 @@ famous = require 'famous'
 
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
+Opacity = famous.components.Opacity
 
 {sin, cos, sqrt, abs} = Math
 
@@ -14,6 +15,7 @@ class Edge extends FamousNode
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
+    @opacity = new Opacity @
     @element = new DOMElement @
 
   set: (args) ->
@@ -31,6 +33,12 @@ class Edge extends FamousNode
     @curve = @length / 9
     # debugger
     @element.setContent @svgCurve()
+
+  hide: (transition = {duration: 1000}) ->
+    new Promise (resolve, reject) =>
+      @opacity.set 0, transition, =>
+        @dismount()
+        resolve()
 
   svgCurve: ->
     data = """
