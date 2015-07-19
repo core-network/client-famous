@@ -9,7 +9,7 @@ CoreBubblesLayout = require './layouts/coreBubbles'
 rootNode = new Node
   id: "id0"
 
-nodes = for i in [1..36]
+nodes = for i in [1..39]
   new Node
     id: "id#{i}"
     sector: floor random() * 6  # temporary, we will do sectors intelligently later
