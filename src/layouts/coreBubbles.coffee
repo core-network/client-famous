@@ -9,6 +9,8 @@ Spring = famous.physics.Spring
 Particle = famous.physics.Particle
 Vec3 = famous.math.Vec3
 Sphere = famous.physics.Sphere
+GestureHandler = famous.components.GestureHandler
+Position = famous.components.Position
 
 π = Math.PI
 { abs, cos, pow, random, round, sin, sqrt } = Math
@@ -75,7 +77,8 @@ class CoreBubblesLayout
   addNode: (node) ->
     # throw new Error unless node.sector?
     # todo manage our own physics stuff but don't overwrite others
-    position = node.getPosition() ? new Vec3 random() * Math.PI, random() * Math.PI, 0
+    position = node.getPosition()
+    node.pos = position
     node.sphere = new Sphere
       radius: node.size / 2
       mass: node.size / 10
@@ -87,6 +90,18 @@ class CoreBubblesLayout
     node.spring.anchor = @attractors[node.sector]
     @physics.add node.sphere, node.spring
     @collision.addTarget node.sphere
+    gestures = new GestureHandler node, [
+      event: 'drag'
+      callback: (e) =>
+        switch e.status
+          when 'start' then @physics.removeForce node.spring
+          when 'end' then @physics.addForce node.spring
+          when 'move'
+            d = e.centerDelta
+            pos = node.sphere.getPosition()
+            node.sphere.setPosition pos.x + d.x, pos.y + d.y, pos.z
+    ]
+
 
   rectangular: (radius, angle) ->
     throw new Error unless radius? and angle?
