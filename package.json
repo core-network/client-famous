@@ -15,7 +15,7 @@
     "shipit": "npm run test && git push origin head",
     "test": "mocha --recursive --compilers coffee:coffee-script/register",
     "serve-dev": "browser-sync start --server --files 'dist/*' --startPath 'dist' ",
-    "watch": "nodemon --watch src --exec \"browserify\" src/index.coffee --transform coffeeify --extension='.coffee' --outfile dist/bundle.js "
+    "watch": "nodemon --watch src --exec 'browserify' src/index.coffee --transform coffeeify --extension='.coffee' --outfile dist/bundle.js "
   },
   "devDependencies": {
     "browser-sync": "^2.8.0",
