@@ -4,15 +4,16 @@
 Node = require '../core/node'
 Edge = require '../core/edge'
 
-π = Math.PI
 { abs, cos, pow, round, sin, sqrt } = Math
 
-CIRCLE_RADIANS = 2*π
-NOON = CIRCLE_RADIANS * 0.75    # "12 o'clock", where radians start at "3 o'clock"
+π = Math.PI
+τ = 2*π
+# ε = 1e-6
+NOON = τ * 0.75    # "12 o'clock", where radians start at "3 o'clock"
 RING_SIZE = 100
 NODE_SIZE = RING_SIZE * 0.5
 NODES_IN_INNER_RING = 6
-MAX_ITERATIONS = pow 10, 5
+MAX_ITERATIONS = 1e+5
 
 DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
@@ -51,8 +52,8 @@ class SpiralLayout
   incrementLocation: ->
     @ring ?= @incrementRing()
     @angle ?= NOON
-    if @angle < NOON + CIRCLE_RADIANS
-      @angle += CIRCLE_RADIANS / @nodes_in_this_ring
+    if @angle < NOON + τ
+      @angle += τ / @nodes_in_this_ring
     else
       @incrementRing()
       @angle = NOON

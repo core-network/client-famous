@@ -69,7 +69,7 @@ class Node extends FamousNode
           filter="url(#glow)"
         />
       </svg>
-    """
+      """
     svg.replace /\s+/g, ' '
 
   getPosition: ->
