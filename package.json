@@ -18,20 +18,14 @@
     "watch": "nodemon --watch src --exec \"browserify\" src/index.coffee --transform coffeeify --extension='.coffee' --outfile dist/bundle.js "
   },
   "devDependencies": {
-    "babelify": "^6.1.3",
     "browser-sync": "^2.8.0",
     "browserify": "^11.0.0",
     "chai": "^3.2.0",
     "chai-stats": "^0.3.0",
-    "chalk": "^1.1.0",
     "coffee-script": "^1.9.3",
     "coffeeify": "^1.1.0",
-    "eslint": "^0.24.1",
     "famous": "^0.6.2",
-    "finalhandler": "^0.4.0",
     "gh-pages": "^0.3.1",
-    "http-server": "^0.8.0",
-    "jscs": "^1.13.1",
     "lightsaber": "^0.4.1",
     "lodash": "^3.10.0",
     "mocha": "^2.2.5",
@@ -42,10 +36,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/nodesphere/graphviz.git"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
   }
 }
