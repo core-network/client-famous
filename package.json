@@ -1,7 +1,7 @@
 {
   "name": "nodesphere-graphviz",
-  "version": "0.0.0",
-  "description": "Work in progress... look away ;)",
+  "version": "0.0.1",
+  "description": "Pre-alpha demo graph visualizations",
   "authors": [
     "Harlan T Wood <code@nodesphere.org> (http://nodesphere.org/)",
     "Jack Senechal (https://github.com/jacksenechal)"
