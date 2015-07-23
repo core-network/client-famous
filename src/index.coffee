@@ -1,3 +1,4 @@
+Octokat = require 'octokat'
 {json, log, p, pjson} = require 'lightsaber'
 Node = require './core/node'
 Edge = require './core/edge'
@@ -27,3 +28,18 @@ world.render new SpiralLayout()
 window.setTimeout =>
   world.render new CoreBubblesLayout()
 , 3000
+
+
+octo = new Octokat
+  username: "nodesphere-demo"
+  password: "password0"
+
+cb = (err, val) ->
+  if err
+    throw err
+  else
+    console.log val
+
+octo.zen.read(cb)
+octo.repos('philschatz', 'octokat.js').fetch(cb)
+octo.me.starred('philschatz', 'octokat.js').add(cb)
