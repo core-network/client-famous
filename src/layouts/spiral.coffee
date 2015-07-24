@@ -12,7 +12,7 @@ Edge = require '../core/edge'
 NOON = τ * 0.75    # "12 o'clock", where radians start at "3 o'clock"
 RING_SIZE = 100
 NODE_SIZE = RING_SIZE * 0.5
-NODES_IN_INNER_RING = 6
+NODES_IN_INNER_RING = 12
 MAX_ITERATIONS = 1e+5
 
 DEBUG = 0

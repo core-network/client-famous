@@ -1,15 +1,18 @@
+{ floor, random } = Math
 { values } = require 'lodash'
 { json, log, p, pjson } = require 'lightsaber'
 xhr = require 'xhr'
+
 Node = require './core/node'
 Edge = require './core/edge'
 World = require './core/world'
 SpiralLayout = require './layouts/spiral'
 CoreBubblesLayout = require './layouts/coreBubbles'
-{ floor, random } = Math
 
 DEMO_HASH = 'QmUWJPLiN6ZPT351sXseVh1gdodqGPHL7Z2s2qJbAtt5NY'  # example viewer directory
-DEBUG = true
+
+DEBUG = 0
+debug = (args...) -> console.debug args... if DEBUG
 
 app = ->
   hash = window.location.hash[1..]
@@ -22,10 +25,8 @@ app = ->
 
 render = (hash) ->
   API_REFS_FORMAT = encodeURIComponent '<src> <dst> <linkname>'
-  apiPath = "/api/v0/refs?arg=#{hash}&recursive&format=#{API_REFS_FORMAT}"
-  debug apiPath
-  xhr { uri: apiPath }, (error, response, body) ->
-    debug arguments
+  uri = "/api/v0/refs?arg=#{hash}&recursive&format=#{API_REFS_FORMAT}"
+  xhr { uri }, (error, response, body) ->
     data = body
     tree = {}
     nodeCache = {}
@@ -44,9 +45,5 @@ render = (hash) ->
     window.setTimeout =>
       world.render new CoreBubblesLayout()
     , 3000
-
-debug = (args...) ->
-  if DEBUG
-    console.debug args...
 
 app()

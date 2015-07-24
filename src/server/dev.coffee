@@ -1,7 +1,10 @@
+#!/usr/bin/env coffee
+
 { json, log, p, pjson } = require 'lightsaber'
-bs = require('browser-sync').create()
 request = require 'request'
-bs.init
+browserSync = require('browser-sync').create()
+
+browserSync.init
   startPath: 'dist'
   files: 'dist/*'
   server:
@@ -10,7 +13,6 @@ bs.init
       host = 'http://localhost:5001'
       req.headers.host = host
       req.headers.referer = "#{host}/ipfs/"
-      # p req.headers
       pattern = /// ^/(ipfs|api)/.+$ ///
       if req.url.match(pattern)
         proxyPath = req.url.match(pattern)[0]
