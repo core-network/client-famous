@@ -12,7 +12,6 @@ DEMO_HASH = 'QmUWJPLiN6ZPT351sXseVh1gdodqGPHL7Z2s2qJbAtt5NY'  # example viewer d
 DEBUG = true
 
 app = ->
-  log 'hello kitty'
   hash = window.location.hash[1..]
   debug hash
   if hash.length > 0
@@ -22,7 +21,6 @@ app = ->
     window.location.reload()
 
 render = (hash) ->
-  log 'meow'
   API_REFS_FORMAT = encodeURIComponent '<src> <dst> <linkname>'
   apiPath = "/api/v0/refs?arg=#{hash}&recursive&format=#{API_REFS_FORMAT}"
   debug apiPath
