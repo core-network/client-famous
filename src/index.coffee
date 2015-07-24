@@ -29,6 +29,7 @@ fetch = (hash) ->
   xhr { uri }, process
 
 process = (error, response, body) ->
+  throw error if error
   data = body
   tree = {}
   nodeCache = {}
@@ -36,10 +37,10 @@ process = (error, response, body) ->
 
   refApiPattern = /"Ref": "(\S+) (\S+) (\S+)\\n"/g
   while match = refApiPattern.exec data
-    [whole, src, dst, linkname] = match
-    start = nodeCache[src] ?= new Node id: src
-    end = nodeCache[dst] ?= new Node id: dst, name: linkname
-    edges.push new Edge { start, end }
+    [whole, startId, endId, edgeLabel] = match
+    start = nodeCache[startId] ?= new Node id: startId
+    end = nodeCache[endId] ?= new Node id: endId
+    edges.push new Edge { start, end, label: edgeLabel }
 
   nodes = values nodeCache
   visualize { nodes, edges }
