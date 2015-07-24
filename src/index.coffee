@@ -9,7 +9,7 @@ World = require './core/world'
 SpiralLayout = require './layouts/spiral'
 CoreBubblesLayout = require './layouts/coreBubbles'
 
-DEMO_HASH = 'QmUWJPLiN6ZPT351sXseVh1gdodqGPHL7Z2s2qJbAtt5NY'  # example viewer directory
+DEMO_HASH = 'QmR54bxYRA5VF9kWXDFE6JNw52GBPpchc8eqpPb64wu77e'  
 
 DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
@@ -40,10 +40,11 @@ render = (hash) ->
       edges.push new Edge { start, end }
 
     nodes = values nodeCache
-    world = new World { nodes, edges }
-    world.render new SpiralLayout()
-    window.setTimeout =>
-      world.render new CoreBubblesLayout()
-    , 3000
+    visualize { nodes, edges }
+
+visualize = (data) ->
+  world = new World data
+  world.render new SpiralLayout()
+  window.setTimeout ( => world.render new CoreBubblesLayout() ), 3000
 
 app()
