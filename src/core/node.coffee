@@ -25,7 +25,7 @@ class Node extends FamousNode
 
     text = @addChild()
     new DOMElement text,
-      content: @name ? @id
+      content: @name 
       opacity: 0.9
       properties:
         color: "#9FDAFF"

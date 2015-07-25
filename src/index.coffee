@@ -37,17 +37,27 @@ process = (error, response, body) ->
 
   refApiPattern = /"Ref": "(\S+) (\S+) (\S+)\\n"/g
   while match = refApiPattern.exec data
-    [whole, startId, endId, edgeLabel] = match
-    start = nodeCache[startId] ?= new Node id: startId
-    end = nodeCache[endId] ?= new Node id: endId
-    edges.push new Edge { start, end, label: edgeLabel }
+    [whole, startId, endId, linkName] = match
+    start = cache nodeCache, id: startId
+    end = cache nodeCache, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
+    edges.push new Edge { start, end }
 
   nodes = values nodeCache
   visualize { nodes, edges }
 
+cache = (nodeCache, props) ->
+  id = props.id ? throw new Error
+  if nodeCache[id]
+    if nodeCache[id].name
+      nodeCache[id].name += ' / ' + props.name
+    else
+      nodeCache[id].name = props.name
+  else
+    nodeCache[id] = new Node props
+  nodeCache[id]
+
 visualize = (data) ->
   world = new World data
   world.render new SpiralLayout()
-  window.setTimeout ( => world.render new CoreBubblesLayout() ), 3000
 
 app()
