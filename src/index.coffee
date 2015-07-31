@@ -1,5 +1,5 @@
 { floor, random } = Math
-{ values } = require 'lodash'
+{ find, values } = require 'lodash'
 { json, log, p, pjson } = require 'lightsaber'
 xhr = require 'xhr'
 
@@ -9,7 +9,7 @@ World = require './core/world'
 SpiralLayout = require './layouts/spiral'
 CoreBubblesLayout = require './layouts/coreBubbles'
 
-DEMO_HASH = 'QmR54bxYRA5VF9kWXDFE6JNw52GBPpchc8eqpPb64wu77e'
+DEMO_HASH = 'QmXhcnFtfHuNbpRNUJoiRdhkskCoTtT6RYjPZA4woS7sMG'
 
 DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
@@ -42,14 +42,16 @@ process = (error, response, body) ->
     end = cache nodeCache, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
     edges.push new Edge { start, end }
 
+  rootNode = find nodeCache, (node, nodeId) -> not node.name?
+
   nodes = values nodeCache
-  visualize { nodes, edges }
+  visualize { rootNodeId: rootNode.id, nodes, edges }
 
 cache = (nodeCache, props) ->
   id = props.id ? throw new Error
   if nodeCache[id]
     if nodeCache[id].name
-      nodeCache[id].name += ' / ' + props.name
+      nodeCache[id].name += ' / ' + props.name   # TODO: we should not append the same name twice
     else
       nodeCache[id].name = props.name
   else
