@@ -3,6 +3,7 @@
 
 Node = require '../core/node'
 Edge = require '../core/edge'
+{rectangular} = require '../core/geometry'
 
 { abs, cos, pow, round, sin, sqrt } = Math
 
@@ -10,7 +11,7 @@ Edge = require '../core/edge'
 τ = 2*π
 # ε = 1e-6
 NOON = τ * 0.75    # "12 o'clock", where radians start at "3 o'clock"
-RING_SIZE = 100
+RING_SIZE = 200
 NODE_SIZE = RING_SIZE * 0.5
 NODES_IN_INNER_RING = 6
 MAX_ITERATIONS = 1e+5
@@ -43,7 +44,7 @@ class SpiralLayout
       @nextAvailableLocation()
 
   available: ->
-    target = @rectangular @radius, @angle
+    target = rectangular { @radius, @angle }
     for id, node of @nodes
       if (abs(target.x - node.x) < NODE_SIZE) and (abs(target.y - node.y) < NODE_SIZE)
         return false
@@ -63,11 +64,5 @@ class SpiralLayout
     @radius = @ring * RING_SIZE
     @nodes_in_this_ring = @ring * NODES_IN_INNER_RING
     @ring
-
-  rectangular: (radius, angle) ->
-    throw new Error unless radius? and angle?
-    x = radius * cos angle
-    y = radius * sin angle
-    {x, y}
 
 module.exports = SpiralLayout

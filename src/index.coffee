@@ -1,5 +1,5 @@
 { floor, random } = Math
-{ find, values } = require 'lodash'
+{ find, unique, values } = require 'lodash'
 { json, log, p, pjson } = require 'lightsaber'
 xhr = require 'xhr'
 
@@ -42,21 +42,22 @@ process = (error, response, body) ->
     end = cache nodeCache, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
     edges.push new Edge { start, end }
 
-  rootNode = find nodeCache, (node, nodeId) -> not node.name?
+  rootNode = find nodeCache, (node, nodeId) -> node.name is '[root]'
 
   nodes = values nodeCache
   visualize { rootNodeId: rootNode.id, nodes, edges }
 
 cache = (nodeCache, props) ->
   id = props.id ? throw new Error
-  if nodeCache[id]
-    if nodeCache[id].name
-      nodeCache[id].name += ' / ' + props.name   # TODO: we should not append the same name twice
-    else
-      nodeCache[id].name = props.name
+  name = props.name ? "[root]"
+  if node = nodeCache[id]
+    node.names.push name
+    node.name = unique(nodeCache[id].names).join ' / '
   else
-    nodeCache[id] = new Node props
-  nodeCache[id]
+    node = new Node props
+    node.names = [name]
+    nodeCache[id] = node
+  node
 
 visualize = (data) ->
   world = new World data

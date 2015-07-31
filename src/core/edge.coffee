@@ -5,6 +5,8 @@ DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
 Opacity = famous.components.Opacity
 
+{distance, polar, vector} = require '../core/geometry'
+
 {sin, cos, sqrt, abs} = Math
 
 class Edge extends FamousNode
@@ -25,11 +27,8 @@ class Edge extends FamousNode
 
   render: ->
     @setPosition @start.x, @start.y, @start.z-100
-    @setRotation 0, 0, @end.angle
-    @length = sqrt(
-      (@start.x - @end.x) * (@start.x - @end.x) +
-      (@start.y - @end.y) * (@start.y - @end.y)
-    )
+    @setRotation 0, 0, polar(vector @start, @end).angle
+    @length = distance @start, @end
     @curve = @length / 9
     # debugger
     @element.setContent @svgCurve()
@@ -50,7 +49,7 @@ class Edge extends FamousNode
         #{@length}          0
       """
     svg = """
-      <svg>
+      <svg style="width: #{@length}px; height: #{@length/4}px; position: absolute; top: 0; left: 0;">
         <path
           d="#{data}"
           stroke="#73BAE7"
@@ -60,6 +59,10 @@ class Edge extends FamousNode
         />
       </svg>
       """
+    # Uncomment this for labels
+    # svg += """
+    #   <div style="color: white; white-space: nowrap; position: absolute; top: 0; left: 0;">#{@start.name} -> #{@end.name}</div>
+    #   """
     svg.replace /\s+/g, ' '
 
 module.exports = Edge
