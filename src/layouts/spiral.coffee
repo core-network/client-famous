@@ -20,15 +20,21 @@ class SpiralLayout
   constructor: ->
     @iterations = 0
 
-  render: (input) ->
-    rootNode = if input.rootNodeId
-      find(input.nodes, {id: input.rootNodeId}) ? throw new Error "input.nodes does not contain node wih ID #{input.rootNodeId}"
+  setWorld: (@world) ->
+
+  render: ({nodes, edges, rootNodeId}) ->
+    rootNode = if rootNodeId
+      find(nodes, {id: rootNodeId}) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson nodes}"
     else
-      input.nodes[0]
+      nodes[0]
     rootNode.radius = 0
-    for node in input.nodes when node isnt rootNode
+    for node in nodes when node isnt rootNode
       node.set @nextAvailableLocation()
-    for edge in input.edges
+      node.on 'click', =>
+        @world.render
+          layout: new SpiralLayout
+          rootNodeId: node.id
+    for edge in edges
       edge.render()
 
   nextAvailableLocation: ->

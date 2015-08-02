@@ -25,7 +25,7 @@ class Node extends FamousNode
 
     text = @addChild()
     new DOMElement text,
-      content: @name 
+      content: @name
       opacity: 0.9
       properties:
         color: "#9FDAFF"
@@ -50,6 +50,11 @@ class Node extends FamousNode
     @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
     # debugger
+
+  on: (eventType, callback) ->
+    @addUIEvent eventType
+    @onReceive = (event, payload) ->
+      callback payload if event is eventType
 
   svgDot: ->
     svg = """

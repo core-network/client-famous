@@ -18,6 +18,7 @@
     "watch": "nodemon --watch src --exec 'browserify' src/index.coffee --transform coffeeify --extension='.coffee' --outfile dist/bundle.js "
   },
   "devDependencies": {
+    "bluebird": "^2.9.34",
     "browser-sync": "^2.8.0",
     "browserify": "^11.0.0",
     "chai": "^3.2.0",

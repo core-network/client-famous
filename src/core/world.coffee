@@ -1,26 +1,27 @@
+{ json, log, p, pjson } = require 'lightsaber'
+
 famous = require 'famous'
 FamousEngine = famous.core.FamousEngine
 
-HistoryLayout     = require '../layouts/history'
-SpiralLayout      = require '../layouts/spiral'
-CoreBubblesLayout = require '../layouts/coreBubbles'
+# HistoryLayout     = require '../layouts/history'
 
 class World
-  constructor: ({data, @rootLayout}) ->
+  constructor: ->
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @sceneRoot = scene.addChild()
-    @set data
-    @rootLayout ?= new HistoryLayout
+    # @rootLayout = new HistoryLayout
 
-  set: (@data) ->
-    @add node for node in @data.nodes
-    @add edge for edge in @data.edges
-
-  render: (newLayout) ->
-    @layout?.physics?.active = false
-    newLayout.render @data
-    @layout = newLayout
+  render: ({layout, source, rootNodeId}) ->
+    @source = source if source?
+    @source.fetch {rootNodeId}
+      .then ({ nodes, edges }) =>
+        @add node for node in nodes
+        @add edge for edge in edges
+        @layout?.physics?.active = false
+        layout.setWorld @
+        layout.render {nodes, edges, rootNodeId}
+        @layout = layout
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode
