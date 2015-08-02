@@ -1,3 +1,8 @@
+- spiral layout allows clicking nodes
+  - new node centers
+  - old layout fades
+  - loads new data
+- world keeps history and allows you to navigate back through history
 - depthTrees
 - make IPFS an adapter  
 - visualize trust networks

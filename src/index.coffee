@@ -6,8 +6,8 @@ xhr = require 'xhr'
 Node = require './core/node'
 Edge = require './core/edge'
 World = require './core/world'
-# SpiralLayout = require './layouts/spiral'
-DepthTree = require './layouts/depthTree'
+Spiral = require './layouts/spiral'
+# DepthTree = require './layouts/depthTree'
 CoreBubblesLayout = require './layouts/coreBubbles'
 
 DEMO_HASH = 'QmXhcnFtfHuNbpRNUJoiRdhkskCoTtT6RYjPZA4woS7sMG'
@@ -63,7 +63,7 @@ cache = (nodeCache, props) ->
   node
 
 visualize = (data) ->
-  world = new World data
-  world.render new DepthTree()
+  world = new World {data}
+  world.render new Spiral()
 
 app()
