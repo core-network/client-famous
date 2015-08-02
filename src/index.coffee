@@ -6,7 +6,8 @@ xhr = require 'xhr'
 Node = require './core/node'
 Edge = require './core/edge'
 World = require './core/world'
-SpiralLayout = require './layouts/spiral'
+# SpiralLayout = require './layouts/spiral'
+DepthTree = require './layouts/depthTree'
 CoreBubblesLayout = require './layouts/coreBubbles'
 
 DEMO_HASH = 'QmXhcnFtfHuNbpRNUJoiRdhkskCoTtT6RYjPZA4woS7sMG'
@@ -18,14 +19,16 @@ app = ->
   hash = window.location.hash[1..]
   debug hash
   if hash.length > 0
-    fetch hash
+    fetch {hash, recursive: false}
   else
     window.location.hash = '#'+DEMO_HASH
     window.location.reload()
 
-fetch = (hash) ->
+fetch = ({hash, recursive}) ->
   API_REFS_FORMAT = encodeURIComponent '<src> <dst> <linkname>'
-  uri = "/api/v0/refs?arg=#{hash}&recursive&format=#{API_REFS_FORMAT}"
+  params = {arg: hash, format: API_REFS_FORMAT, recursive}
+  queryString = ("#{k}=#{v}" for k, v of params).join '&'
+  uri = "/api/v0/refs?#{queryString}"
   xhr { uri }, process
 
 process = (error, response, body) ->
@@ -61,6 +64,6 @@ cache = (nodeCache, props) ->
 
 visualize = (data) ->
   world = new World data
-  world.render new SpiralLayout()
+  world.render new DepthTree()
 
 app()

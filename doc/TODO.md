@@ -1,0 +1,7 @@
+- depthTrees
+- make IPFS an adapter  
+- visualize trust networks
+- set up tracker or trello
+- work on layouts
+- launch IPFS server
+- semantic crunching
