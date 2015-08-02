@@ -7,18 +7,22 @@ Edge = require '../core/edge'
 
 { abs, cos, pow, round, sin, sqrt } = Math
 
-τ = 2 * Math.PI
+π = Math.PI
+τ = 2*π
+# ε = 1e-6
 NOON = τ * 0.75    # "12 o'clock", where radians start at "3 o'clock"
 RING_SIZE = 111
-NODES_IN_INNER_RING = 8
+NODE_SIZE = RING_SIZE * 0.5
+NODES_IN_INNER_RING = 6
 MAX_ITERATIONS = 1e+5
 
 DEBUG = 0
 debug = (args...) -> console.debug args... if DEBUG
 
-class SpiralLayout
+class MultiLevelSpiral
   constructor: ->
     @iterations = 0
+    @nodes = {}
 
   render: (input) ->
     rootNode = if input.rootNodeId
@@ -34,6 +38,18 @@ class SpiralLayout
   nextAvailableLocation: ->
     throw new Error if @iterations++ > MAX_ITERATIONS
     @incrementLocation()
+    if @available()
+      { @radius, @angle }
+    else
+      @nextAvailableLocation()
+
+  # WIP -- @nodes is not yet populated!
+  available: ->
+    target = rectangular { @radius, @angle }
+    for id, node of @nodes
+      if (abs(target.x - node.x) < NODE_SIZE) and (abs(target.y - node.y) < NODE_SIZE)
+        return false
+    true
 
   incrementLocation: ->
     @ring ?= @incrementRing()
@@ -43,7 +59,6 @@ class SpiralLayout
     else
       @incrementRing()
       @angle = NOON
-    { @radius, @angle }
 
   incrementRing: ->
     @ring = if @ring? then @ring+1 else 1
@@ -51,4 +66,4 @@ class SpiralLayout
     @nodes_in_this_ring = @ring * NODES_IN_INNER_RING
     @ring
 
-module.exports = SpiralLayout
+module.exports = MultiLevelSpiral
