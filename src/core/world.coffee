@@ -12,15 +12,15 @@ class World
     @sceneRoot = scene.addChild()
     # @rootLayout = new HistoryLayout
 
-  render: ({layout, source, rootNodeId}) ->
+  render: ({layout, source, rootNodeId, sourceUri}) ->
     @source = source if source?
-    @source.fetch {rootNodeId}
-      .then ({ nodes, edges }) =>
+    @source.fetch {rootNodeId, sourceUri}
+      .then ({ nodes, edges, suggestedRootNodeId }) =>
         @add node for node in nodes
         @add edge for edge in edges
         @layout?.physics?.active = false
         layout.setWorld @
-        layout.render {nodes, edges, rootNodeId}
+        layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
         @layout = layout
 
   add: (famousNode) =>

@@ -20,31 +20,31 @@ class IPFS
   process: ([res]) =>
     data = res.body
     tree = {}
-    nodeCache = {}
+    nodeMap = {}
     edges = []
 
     refApiPattern = /"Ref": "(\S+) (\S+) (\S+)\\n"/g
     while match = refApiPattern.exec data
       [whole, startId, endId, linkName] = match
-      start = @cache nodeCache, id: startId
-      end = @cache nodeCache, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
+      start = @cache nodeMap, id: startId
+      end = @cache nodeMap, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
       edges.push new Edge { start, end }
 
-    rootNode = find nodeCache, (node, nodeId) -> node.name is '[root]'
+    rootNode = find nodeMap, (node, nodeId) -> node.name is '[root]'
 
-    nodes = values nodeCache
+    nodes = values nodeMap
     {nodes, edges}
 
-  cache: (nodeCache, props) ->
+  cache: (nodeMap, props) ->
     id = props.id ? throw new Error
-    name = props.name ? "[root]"
-    if node = nodeCache[id]
+    name = props.name # ? "[root]"
+    if node = nodeMap[id]
       node.names.push name
-      node.name = unique(nodeCache[id].names).join ' / '
+      node.name = unique(nodeMap[id].names).join ' / '
     else
       node = new Node props
       node.names = [name]
-      nodeCache[id] = node
+      nodeMap[id] = node
     node
 
 module.exports = IPFS

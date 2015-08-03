@@ -4,7 +4,15 @@
 global.Promise = require 'bluebird'  # override built in Promise everywhere
 World = require './core/world'
 SpiralLayout = require './layouts/spiral'
-# CoreBubblesLayout = require './layouts/coreBubbles'
+
+# JsonAdaptor = require './adaptor/json'
+# jsonDataUri = 'https://rawgit.com/mbostock/4062045/raw/9653f99dbf6050b0f28ceafbba659ac5e1e66fbd/miserables.json'
+# world = new World
+# world.render
+#   source: new JsonAdaptor
+#   sourceUri: jsonDataUri
+#   layout: new SpiralLayout
+
 IPFS = require './adaptor/ipfs'
 
 DEMO_HASH = 'QmRAdbiFeLjb7RBHSJ2RwaKqvpDMSe7Jt1hCcLJ2isLn4M'
