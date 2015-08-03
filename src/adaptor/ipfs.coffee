@@ -30,20 +30,19 @@ class IPFS
       end = @cache nodeMap, id: endId, name: linkName  # Note: technically there could be multiple names for the same end node...
       edges.push new Edge { start, end }
 
-    rootNode = find nodeMap, (node, nodeId) -> node.name is '[root]'
-
     nodes = values nodeMap
     {nodes, edges}
 
   cache: (nodeMap, props) ->
     id = props.id ? throw new Error
-    name = props.name # ? "[root]"
+    name = props.name
     if node = nodeMap[id]
-      node.names.push name
-      node.name = unique(nodeMap[id].names).join ' / '
+      if name
+        node.names ?= [node.name]
+        node.names.push name
+        node.name = unique(nodeMap[id].names).join ' / '
     else
       node = new Node props
-      node.names = [name]
       nodeMap[id] = node
     node
 
