@@ -1,0 +1,10 @@
+.pairs
+
+.DS_Store
+/.idea/
+/dist/*.bundle.js
+/dist/bundle.js
+/node_modules/
+/npm-debug.log
+/tags
+/tmp/

@@ -1,5 +1,6 @@
 { json, log, p, pjson } = require 'lightsaber'
 { defaults, values } = require 'lodash'
+Promise = require 'bluebird'
 xhr = Promise.promisify require 'xhr'
 
 Node = require '../core/node'

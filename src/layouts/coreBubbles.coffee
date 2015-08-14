@@ -1,5 +1,6 @@
 { json, log, p, pjson } = require 'lightsaber'
 { defaults, find, merge } = require 'lodash'
+Promise = require 'bluebird'
 
 famous = require 'famous'
 FamousEngine = famous.core.FamousEngine

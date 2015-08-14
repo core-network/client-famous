@@ -1,5 +1,6 @@
 famous = require 'famous'
 {json, log, p, pjson} = require 'lightsaber'
+Promise = require 'bluebird'
 
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node

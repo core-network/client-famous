@@ -1,7 +1,6 @@
 { floor, random } = Math
 { json, log, p, pjson } = require 'lightsaber'
 
-global.Promise = require 'bluebird'  # override built in Promise everywhere
 World = require './core/world'
 SpiralLayout = require './layouts/spiral'
 
