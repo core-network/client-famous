@@ -18,6 +18,7 @@ class World
       .then ({ nodes, edges, suggestedRootNodeId }) =>
         @add node for node in nodes
         @add edge for edge in edges
+        @layout?.hide()
         @layout?.physics?.active = false
         layout.setWorld @
         layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}

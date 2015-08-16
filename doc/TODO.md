@@ -1,7 +1,6 @@
 - spiral layout allows clicking nodes
   - new node centers
-  - old layout fades
-  - loads new data
+- tighten up node clicks -- possibly with ghost dom elements with higher z-index
 - world keeps history and allows you to navigate back through history
 - depthTrees
 - make IPFS an adapter  

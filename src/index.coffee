@@ -14,7 +14,7 @@ SpiralLayout = require './layouts/spiral'
 
 IPFS = require './adaptor/ipfs'
 
-DEMO_HASH = 'QmRAdbiFeLjb7RBHSJ2RwaKqvpDMSe7Jt1hCcLJ2isLn4M'
+DEMO_HASH = 'QmYjtMKBWUBFJDbwmexvsYne6Z4dKTcNqkEnSKT3G6d1FC'
 
 rootNodeId = window.location.hash[1..]
 if rootNodeId.length is 0

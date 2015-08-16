@@ -4,6 +4,7 @@ famous = require 'famous'
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
 Vec3 = famous.math.Vec3
+Opacity = famous.components.Opacity
 
 #π = Math.PI
 {sin, cos, sqrt, abs} = Math
@@ -19,6 +20,7 @@ class Node extends FamousNode
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
+    @opacity = new Opacity @
 
     new DOMElement @,
       content: @svgDot()
@@ -56,9 +58,12 @@ class Node extends FamousNode
     @onReceive = (event, payload) ->
       callback payload if event is eventType
 
+  glowSize: ->
+    @size * 2
+
   svgDot: ->
     svg = """
-      <svg style="position: relative; top: -50%; left: -50%;">
+      <svg style="width: #{@glowSize()}; height: #{@glowSize()}; position: relative; top: -50%; left: -50%;">
         <defs>
           <filter id="glow" filterUnits="userSpaceOnUse" x="0%" y="0%" width="140%" height="140%">
             <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
@@ -67,8 +72,8 @@ class Node extends FamousNode
           </filter>
         </defs>
         <circle
-          cx="#{@size}"
-          cy="#{@size}"
+          cx="#{@glowSize()/2}"
+          cy="#{@glowSize()/2}"
           r="#{@size/2}"
           fill="#9DDCFA"
           filter="url(#glow)"
@@ -79,5 +84,11 @@ class Node extends FamousNode
 
   getPosition: ->
     new Vec3 @x, @y, @z
+
+  onHide: (transition = {duration: 1000}) ->
+    new Promise (resolve, reject) =>
+      @opacity.set 0, transition, =>
+        @dismount()
+        resolve()
 
 module.exports = Node
