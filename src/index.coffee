@@ -14,13 +14,7 @@ SpiralLayout = require './layouts/spiral'
 
 IPFS = require './adaptor/ipfs'
 
-DEMO_HASH = 'QmYjtMKBWUBFJDbwmexvsYne6Z4dKTcNqkEnSKT3G6d1FC'
-
 rootNodeId = window.location.hash[1..]
-if rootNodeId.length is 0
-  window.location.hash = '#'+DEMO_HASH
-  window.location.reload()
-
 world = new World
 world.render
   source: new IPFS

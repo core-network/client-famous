@@ -63,7 +63,7 @@ class SpiralLayout
     @ring
 
   hide: ->
-    node.hide() for node in @nodes
-    edge.hide() for edge in @edges
+    node.hide() for node in @nodes if @nodes
+    edge.hide() for edge in @edges if @edges
 
 module.exports = SpiralLayout

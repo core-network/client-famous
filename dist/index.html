@@ -32,9 +32,184 @@
                 background: linear-gradient(to bottom,  #000000 0%,#05217c 100%);
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#05217c',GradientType=0 );
             }
+
+
+            @import url(http://fonts.googleapis.com/css?family=Cabin:400);
+
+            .nodesphere-search {
+                /* background: #000; */
+                height: 100%;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+            }
+
+            .nodesphere-search:before,
+            .nodesphere-search:after {
+                content: '';
+                display: block;
+                height: 1px;
+                left: 50%;
+                margin: 0 0 0 -400px;
+                position: absolute;
+                width: 800px;
+            }
+
+            /* .nodesphere-search:before {
+                     background: #444;
+                     background: -webkit-linear-gradient(left, #9adcfc, #444, #9adcfc);
+                     background: -moz-linear-gradient(left, #9adcfc, #444, #9adcfc);
+                     background: -o-linear-gradient(left, #9adcfc, #444, #9adcfc);
+                     background: -ms-linear-gradient(left, #9adcfc, #444, #9adcfc);
+                     background: linear-gradient(left, #9adcfc, #444, #9adcfc);
+                     top: 192px;
+                 }
+
+             .nodesphere-search:after {
+                 background: #000;
+                 background: -webkit-linear-gradient(left, #9adcfc, #000, #9adcfc);
+                 background: -moz-linear-gradient(left, #9adcfc, #000, #9adcfc);
+                 background: -o-linear-gradient(left, #9adcfc, #000, #9adcfc);
+                 background: -ms-linear-gradient(left, #9adcfc, #000, #9adcfc);
+                 background: linear-gradient(left, #9adcfc, #000, #9adcfc);
+                 top: 191px;
+             }
+             */
+            .nodesphere-search form {
+                background: transparent;
+                border: 1px solid #9adcff;
+                border-radius: 20px;
+                box-shadow: inset 0 0 0 1px #272727;
+                display: inline-block;
+                font-size: 0px;
+                margin: 30px auto 0;
+                padding: 10px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .nodesphere-search input {
+                background: transparent;
+                border: 1px solid #9adcfc;
+                border-radius: 10px;
+                box-shadow: 0 2px 0 #000;
+                color: #9adcfc;
+                display: block;
+                float: left;
+                font-family: 'Cabin', helvetica, arial, sans-serif;
+                font-size: 50px;
+                font-weight: 400;
+                height: auto;
+                margin: 0;
+                padding: 0 10px;
+                text-shadow: 0 -1px 0 #000;
+                width: auto;
+
+            }
+
+            .ie .nodesphere-search input {
+                line-height: 50px;
+            }
+
+            .nodesphere-search input::-webkit-input-placeholder {
+                color: rgba(154, 220, 252, 0.33);
+            }
+
+            .nodesphere-search input:-moz-placeholder {
+                color: rgba(154, 220, 252, 0.33);
+            }
+
+            .nodesphere-search input:focus {
+                -webkit-animation: glow 800ms ease-out infinite alternate;
+                -moz-animation: glow 800ms ease-out infinite alternate;
+                -o-animation: glow 800ms ease-out infinite alternate;
+                -ms-animation: glow 800ms ease-out infinite alternate;
+                animation: glow 800ms ease-out infinite alternate;
+                background: transparent;
+                border-color: #9adcfc;
+                box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 2px 0 #000;
+                color: #efe;
+                outline: none;
+            }
+
+            .nodesphere-search input:focus::-webkit-input-placeholder {
+                color: rgba(154, 220, 252, 0.33);
+            }
+
+            .nodesphere-search input:focus:-moz-placeholder {
+                color: rgba(154, 220, 252, 0.33);
+            }
+
+            @-webkit-keyframes glow {
+                0% {
+                    border-color: #9adcfc;
+                    box-shadow: 0 0 5px rgba(159, 218, 255,.2), inset 0 0 5px rgba(159, 218, 255,.1), 0 2px 0 #000;
+                }
+                100% {
+                    border-color: #fff;
+                    box-shadow: 0 0 20px rgba(159, 218, 255,.6), inset 0 0 10px rgba(159, 218, 255,.4), 0 2px 0 #000;
+                }
+            }
+
+            @-moz-keyframes glow {
+                0% {
+                    border-color: #9adcfc;
+                    box-shadow: 0 0 5px rgba(159, 218, 255,.2), inset 0 0 5px rgba(159, 218, 255,.1), 0 2px 0 #000;
+                }
+                100% {
+                    border-color: #fff;
+                    box-shadow: 0 0 20px rgba(159, 218, 255,.6), inset 0 0 10px rgba(159, 218, 255,.4), 0 2px 0 #000;
+                }
+            }
+
+            @-o-keyframes glow {
+                0% {
+                    border-color: #9adcfc;
+                    box-shadow: 0 0 5px rgba(159, 218, 255,.2), inset 0 0 5px rgba(159, 218, 255,.1), 0 2px 0 #000;
+                }
+                100% {
+                    border-color: #fff;
+                    box-shadow: 0 0 20px rgba(159, 218, 255,.6), inset 0 0 10px rgba(159, 218, 255,.4), 0 2px 0 #000;
+                }
+            }
+
+            @-ms-keyframes glow {
+                0% {
+                    border-color: #9adcfc;
+                    box-shadow: 0 0 5px rgba(159, 218, 255,.2), inset 0 0 5px rgba(159, 218, 255,.1), 0 2px 0 #000;
+                }
+                100% {
+                    border-color: #fff;
+                    box-shadow: 0 0 20px rgba(159, 218, 255,.6), inset 0 0 10px rgba(159, 218, 255,.4), 0 2px 0 #000;
+                }
+            }
+
+            @keyframes glow {
+                0% {
+                    border-color: #9adcfc;
+                    box-shadow: 0 0 5px rgba(159, 218, 255,.2), inset 0 0 5px rgba(159, 218, 255,.1), 0 2px 0 #000;
+                }
+                100% {
+                    border-color: #fff;
+                    box-shadow: 0 0 20px rgba(159, 218, 255,.6), inset 0 0 10px rgba(159, 218, 255,.4), 0 2px 0 #000;
+                }
+            }
         </style>
     </head>
     <body>
         <script src="bundle.js"></script>
+        <section class="nodesphere-search">
+            <form>
+                <input id="search" type="search" placeholder="enter a hash...">
+            </form>
+            <script>
+                search = document.getElementById('search')
+                search.onkeypress = function(event) {
+                    if(event.keyCode == 13) {
+                        history.pushState({ rootNodeId: search.value }, null, '#'+ search.value)
+                    }
+                }
+            </script>
+        </section>
     </body>
 </html>

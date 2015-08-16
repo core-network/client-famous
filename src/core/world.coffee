@@ -11,9 +11,16 @@ class World
     FamousEngine.init()
     scene = FamousEngine.createScene()
     @sceneRoot = scene.addChild()
-    window.onpopstate = (event) =>
+    window.onpopstate = @onpopstate.bind @
+
+  onpopstate: (event) ->
+      # p "popstate", event
+      if event.state?.rootNodeId?
+        rootNodeId = event.state.rootNodeId
+      else if not isEmpty window.location.hash
+        rootNodeId = window.location.hash[1..]
       @render
-        rootNodeId: event.state.rootNodeId
+        rootNodeId: rootNodeId
         layout: @layout.clone()
         historyAction: false
 
@@ -22,17 +29,21 @@ class World
     @render args
 
   render: ({layout, source, rootNodeId, sourceUri, historyAction}) ->
-    historyAction ?= 'replaceState'
     @source = source if source?
+    historyAction ?= 'replaceState'
+    if isEmpty(rootNodeId)
+      @layout = layout if layout?
+      return
     @source.fetch {rootNodeId, sourceUri}
       .then ({ nodes, edges, suggestedRootNodeId }) =>
-        if isEmpty nodes
+        if isEmpty(nodes)
+          p "no nodes found for #{rootNodeId}, treating as file"
           window.location = @source.path rootNodeId
         else
           @add node for node in nodes
           @add edge for edge in edges
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
-            history[historyAction] { rootNodeId, foo: 'bar' }, null, "##{rootNodeId}"
+            history[historyAction] { rootNodeId }, null, "##{rootNodeId}"
           @layout?.hide()
           @layout?.physics?.active = false
           layout.setWorld @
