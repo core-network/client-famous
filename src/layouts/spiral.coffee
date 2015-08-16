@@ -35,10 +35,9 @@ class SpiralLayout
       do (node) =>
         node.set @nextAvailableLocation()
         node.on 'click', (event) =>
-          @world.render
+          @world.renderFromClick
             layout: @clone()
             rootNodeId: node.id
-            historyAction: 'pushState'
 
     for edge in @edges
       edge.render()
