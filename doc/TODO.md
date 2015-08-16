@@ -1,5 +1,4 @@
-- when clicking a file, show the file
-- push state for history
+- merge to master
 - morph from one spiral layout to a new one on click
 - tighten up node clicks -- possibly with ghost dom elements with higher z-index
 - world keeps history and allows you to navigate back through history

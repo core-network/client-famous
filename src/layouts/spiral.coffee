@@ -22,6 +22,9 @@ class SpiralLayout
 
   setWorld: (@world) ->
 
+  clone: ->
+    new SpiralLayout
+
   render: ({@nodes, @edges, rootNodeId}) ->
     rootNode = if rootNodeId
       find(@nodes, {id: rootNodeId}) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
@@ -33,8 +36,9 @@ class SpiralLayout
         node.set @nextAvailableLocation()
         node.on 'click', (event) =>
           @world.render
-            layout: new SpiralLayout
+            layout: @clone()
             rootNodeId: node.id
+            pushState: true
     for edge in @edges
       edge.render()
 

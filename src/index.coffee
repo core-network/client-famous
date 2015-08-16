@@ -26,3 +26,4 @@ world.render
   source: new IPFS
   layout: new SpiralLayout
   rootNodeId: rootNodeId
+  pushState: true
