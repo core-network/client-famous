@@ -18,26 +18,37 @@ class World
         historyAction: false
 
   renderFromClick: (args) ->
+    args.layout = @layout.clone()
     args.historyAction = 'pushState'
     @render args
 
   render: ({layout, source, rootNodeId, sourceUri, historyAction}) ->
     historyAction ?= 'replaceState'
     @source = source if source?
-    @source.fetch {rootNodeId, sourceUri}
-      .then ({ nodes, edges, suggestedRootNodeId }) =>
-        if isEmpty nodes
-          window.location = @source.path rootNodeId
-        else
-          @add node for node in nodes
-          @add edge for edge in edges
-          if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
-            history[historyAction] { rootNodeId, foo: 'bar' }, null, "##{rootNodeId}"
-          @layout?.hide()
-          @layout?.physics?.active = false
-          layout.setWorld @
-          layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
-          @layout = layout
+    if rootNodeId?
+      @source.fetch {rootNodeId, sourceUri}
+        .then ({ nodes, edges, suggestedRootNodeId }) =>
+          if isEmpty(nodes) and rootNodeId?
+            window.location = @source.path rootNodeId
+            # debugger
+          else
+            # debugger
+            @add node for node in nodes
+            @add edge for edge in edges
+            if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
+              history[historyAction] { rootNodeId, foo: 'bar' }, null, "##{rootNodeId}"
+            @layout?.hide()
+            @layout?.physics?.active = false
+            layout.setWorld @
+            layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
+            @layout = layout
+    else
+      @layout?.hide()
+      @layout?.physics?.active = false
+      layout.setWorld @
+      layout.render()
+      @layout = layout
+
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode
