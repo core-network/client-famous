@@ -16,8 +16,7 @@ class World
         rootNodeId: event.state.rootNodeId
         layout: @layout.clone()
 
-  render: ({layout, source, rootNodeId, sourceUri, pushState}) ->
-    pushState ?= false
+  render: ({layout, source, rootNodeId, sourceUri, historyAction}) ->
     @source = source if source?
     @source.fetch {rootNodeId, sourceUri}
       .then ({ nodes, edges, suggestedRootNodeId }) =>
@@ -26,8 +25,8 @@ class World
         else
           @add node for node in nodes
           @add edge for edge in edges
-          if pushState and history.state?.rootNodeId isnt rootNodeId
-            history.pushState { rootNodeId, foo: 'bar' }, null, "##{rootNodeId}"
+          if history.state?.rootNodeId isnt rootNodeId
+            history[historyAction] { rootNodeId, foo: 'bar' }, null, "##{rootNodeId}"
           @layout?.hide()
           @layout?.physics?.active = false
           layout.setWorld @

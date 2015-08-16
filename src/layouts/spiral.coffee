@@ -38,7 +38,8 @@ class SpiralLayout
           @world.render
             layout: @clone()
             rootNodeId: node.id
-            pushState: true
+            historyAction: 'pushState'
+
     for edge in @edges
       edge.render()
 
