@@ -47,4 +47,7 @@ class IPFS
       nodeMap[id] = node
     node
 
+  path: (id) ->
+    "/ipfs/#{id}"
+
 module.exports = IPFS

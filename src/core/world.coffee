@@ -1,4 +1,5 @@
 { json, log, p, pjson } = require 'lightsaber'
+{ isEmpty } = require 'lodash'
 
 famous = require 'famous'
 FamousEngine = famous.core.FamousEngine
@@ -16,13 +17,16 @@ class World
     @source = source if source?
     @source.fetch {rootNodeId, sourceUri}
       .then ({ nodes, edges, suggestedRootNodeId }) =>
-        @add node for node in nodes
-        @add edge for edge in edges
-        @layout?.hide()
-        @layout?.physics?.active = false
-        layout.setWorld @
-        layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
-        @layout = layout
+        if isEmpty nodes
+          window.location = @source.path rootNodeId
+        else
+          @add node for node in nodes
+          @add edge for edge in edges
+          @layout?.hide()
+          @layout?.physics?.active = false
+          layout.setWorld @
+          layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
+          @layout = layout
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode
