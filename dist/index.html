@@ -10,14 +10,14 @@
   <body>
     <script src="bundle.js"></script>
     <section class="nodesphere-search">
-      <form>
+      <div>
         <input id="search" type="search" placeholder="enter a hash...">
-      </form>
+      </div>
       <script>
         search = document.getElementById('search')
         search.onkeypress = function(event) {
           if(event.keyCode == 13) {
-            history.pushState({ rootNodeId: search.value }, null, '#'+ search.value)
+            window.location.hash = search.value
           }
         }
       </script>

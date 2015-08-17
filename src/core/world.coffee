@@ -40,6 +40,7 @@ class World
           p "no nodes found for #{rootNodeId}, treating as file"
           window.location = @source.path rootNodeId
         else
+          # p "showing nodes", nodes
           @add node for node in nodes
           @add edge for edge in edges
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false

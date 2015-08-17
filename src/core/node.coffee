@@ -26,6 +26,8 @@ class Node extends FamousNode
       content: @svgDot()
 
     text = @addChild()
+    text.setSizeMode 'absolute', 'absolute', 'absolute'
+    text.setAbsoluteSize 333, @size
     new DOMElement text,
       content: @name
       opacity: 0.9
@@ -63,7 +65,7 @@ class Node extends FamousNode
 
   svgDot: ->
     svg = """
-      <svg style="width: #{@glowSize()}; height: #{@glowSize()}; position: relative; top: -50%; left: -50%;">
+      <svg style="width: #{@glowSize()}px; height: #{@glowSize()}px; position: relative; top: -50%; left: -50%;">
         <defs>
           <filter id="glow" filterUnits="userSpaceOnUse" x="0%" y="0%" width="140%" height="140%">
             <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
