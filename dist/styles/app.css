@@ -67,7 +67,7 @@ body {
   margin: 0;
   padding: 0 10px;
   text-shadow: 0 -1px 0 #000;
-  width: auto;
+  width: 1500px;
 }
 .ie .nodesphere-search input {
   line-height: 50px;
