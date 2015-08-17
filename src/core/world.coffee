@@ -49,6 +49,8 @@ class World
           layout.setWorld @
           layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
           @layout = layout
+      .catch (error) =>
+        alert error
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode

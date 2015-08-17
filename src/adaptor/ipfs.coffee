@@ -19,6 +19,8 @@ class IPFS
       .catch (error) -> throw error
 
   process: ([res]) =>
+    if res.statusCode isnt 200
+      throw new Error res.rawRequest.response
     data = res.body
     tree = {}
     nodeMap = {}
