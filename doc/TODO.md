@@ -1,4 +1,4 @@
-- merge to master
+- merge to master (with same or better demo published to gh-pages)
 - morph from one spiral layout to a new one on click
 - tighten up node clicks -- possibly with ghost dom elements with higher z-index
 - world keeps history and allows you to navigate back through history

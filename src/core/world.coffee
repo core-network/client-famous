@@ -14,7 +14,6 @@ class World
     window.onpopstate = @onpopstate.bind @
 
   onpopstate: (event) ->
-      # p "popstate", event
       if event.state?.rootNodeId?
         rootNodeId = event.state.rootNodeId
       else if not isEmpty window.location.hash
@@ -37,10 +36,8 @@ class World
     @source.fetch {rootNodeId, sourceUri}
       .then ({ nodes, edges, suggestedRootNodeId }) =>
         if isEmpty(nodes)
-          p "no nodes found for #{rootNodeId}, treating as file"
           window.location = @source.path rootNodeId
         else
-          # p "showing nodes", nodes
           @add node for node in nodes
           @add edge for edge in edges
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
