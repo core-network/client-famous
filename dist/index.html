@@ -14,7 +14,7 @@
         <input id="search" type="search" placeholder="enter a hash...">
       </div>
       <script>
-        search = document.getElementById('search')
+        var search = document.getElementById('search')
         search.onkeypress = function(event) {
           if(event.keyCode == 13) {
             window.location.hash = search.value
