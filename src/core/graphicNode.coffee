@@ -6,15 +6,21 @@ FamousNode = famous.core.Node
 Vec3 = famous.math.Vec3
 Opacity = famous.components.Opacity
 
-#π = Math.PI
 {sin, cos, sqrt, abs} = Math
 
 class Node extends FamousNode
-  defaultSize: 50
+  DEFAULT_SIZE: 50
+  PROPS: [
+    'id'
+    'name'
+  ]
 
-  constructor: (args) ->
+  constructor: (data) ->
     super
-    @set args
+    @set data
+    @z ?= 0
+    # p args
+    # @set args
     throw new Error unless @id?
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
@@ -40,7 +46,8 @@ class Node extends FamousNode
         paddingLeft: "5px"
 
   set: (data) ->
-    for own key, value of data
+    p @PROPS
+    for own key, value of data when key in @PROPS
       @[key] = value
     @z ?= 0
     @angle = 0 if @radius is 0
@@ -50,10 +57,9 @@ class Node extends FamousNode
       @y = @radius * sin @angle
     @x ?= 0
     @y ?= 0
-    @size ?= @defaultSize
+    @size ?= @DEFAULT_SIZE
     @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
-    # debugger
 
   on: (eventType, callback) ->
     @addUIEvent eventType

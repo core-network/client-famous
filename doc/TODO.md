@@ -3,9 +3,7 @@
 - tighten up node clicks -- possibly with ghost dom elements with higher z-index
 - world keeps history and allows you to navigate back through history
 - depthTrees
-- make IPFS an adapter  
 - visualize trust networks
-- set up tracker or trello
 - work on layouts
-- launch IPFS server
+- launch public IPFS server
 - semantic crunching

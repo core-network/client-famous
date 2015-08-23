@@ -3,6 +3,8 @@
 
 famous = require 'famous'
 FamousEngine = famous.core.FamousEngine
+GraphicNode = require './graphicNode'
+GraphicEdge = require './graphicEdge'
 
 # HistoryLayout     = require '../layouts/history'
 
@@ -38,8 +40,10 @@ class World
         if isEmpty(nodes)
           window.location = @source.path rootNodeId
         else
-          @add node for node in nodes
-          @add edge for edge in edges
+          for node in nodes
+            @add new GraphicNode node.data()
+          for edge in edges
+            @add new GraphicEdge edge.data()
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
             history[historyAction] { rootNodeId }, null, "##{rootNodeId}"
           @layout?.hide()
@@ -48,7 +52,7 @@ class World
           layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
           @layout = layout
       .catch (error) =>
-        alert error
+        console.error error
 
   add: (famousNode) =>
     @sceneRoot.addChild famousNode

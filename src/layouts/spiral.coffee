@@ -1,8 +1,8 @@
 { json, log, p, pjson } = require 'lightsaber'
 { defaults, find, merge } = require 'lodash'
 
-Node = require '../core/node'
-Edge = require '../core/edge'
+Node = require '../core/graphicNode'
+Edge = require '../core/graphicEdge'
 {rectangular} = require '../core/geometry'
 
 { abs, cos, pow, round, sin, sqrt } = Math

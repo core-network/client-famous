@@ -11,8 +11,8 @@ lightsaber = require 'lightsaber'
 { log, p } = lightsaber
 
 SpiralLayout = require '../src/layouts/spiral'
-Node = require '../src/core/node'
-Edge = require '../src/core/edge'
+Node = require '../src/core/graphicNode'
+Edge = require '../src/core/graphicEdge'
 
 π = Math.PI
 τ = 2*π
