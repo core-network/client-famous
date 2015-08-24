@@ -24,7 +24,8 @@ class SpiralLayout
     new SpiralLayout
 
   render: ({graph, rootNodeId}) ->
-    {@nodes, @edges} = graph
+    @nodes = graph.nodes()
+    @edges = graph.edges()
     rootNode = if rootNodeId
       find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
     else

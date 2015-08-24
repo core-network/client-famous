@@ -8,19 +8,22 @@ class Graph
     graph.build simpleNodes, simpleEdges
     graph
 
-  constructor: ->   #({@nodes, @edges}) ->
-    @nodes = {}
-    @edges = {}
+  constructor: ->   #({@nodes, @_edges}) ->
+    @_nodes = {}
+    @_edges = {}
 
   build: (simpleNodes, simpleEdges) ->
     for simpleNode in simpleNodes
-      @nodes[simpleNode.id()] = new GraphicNode node: simpleNode
+      @_nodes[simpleNode.id()] = new GraphicNode node: simpleNode
     for simpleEdge in simpleEdges
-      edge = @edges[simpleEdge.id()] = new GraphicEdge edge: simpleEdge
-      edge.start = @nodes[simpleEdge.start.id()]
-      edge.end   = @nodes[simpleEdge.end.id()]
+      edge = @_edges[simpleEdge.id()] = new GraphicEdge edge: simpleEdge
+      edge.start = @_nodes[simpleEdge.start.id()]
+      edge.end   = @_nodes[simpleEdge.end.id()]
 
-  elements: ->
-    values(@nodes).concat values(@edges)
+  nodes: -> values @_nodes
+
+  edges: -> values @_edges
+
+  elements: -> @nodes().concat @edges()
 
 module.exports = Graph
