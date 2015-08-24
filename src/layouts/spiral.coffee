@@ -23,7 +23,8 @@ class SpiralLayout
   clone: ->
     new SpiralLayout
 
-  render: ({@nodes, @edges, rootNodeId}) ->
+  render: ({graph, rootNodeId}) ->
+    {@nodes, @edges} = graph
     rootNode = if rootNodeId
       find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
     else

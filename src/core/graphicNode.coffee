@@ -17,7 +17,7 @@ class GraphicNode extends FamousNode
 
   constructor: ({@node}) ->
     super
-    throw new Error "Constructor arg 'node' must a Nodesphere Node, got #{json @node}" unless @node instanceof nodesphere.Node
+    throw new Error "Constructor arg 'node' must be a Nodesphere Node, got #{json @node}" unless @node instanceof nodesphere.Node
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
