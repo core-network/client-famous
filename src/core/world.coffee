@@ -16,14 +16,14 @@ class World
     window.onpopstate = @onpopstate.bind @
 
   onpopstate: (event) ->
-      if event.state?.rootNodeId?
-        rootNodeId = event.state.rootNodeId
-      else if not isEmpty window.location.hash
-        rootNodeId = window.location.hash[1..]
-      @render
-        rootNodeId: rootNodeId
-        layout: @layout.clone()
-        historyAction: false
+    if event.state?.rootNodeId?
+      rootNodeId = event.state.rootNodeId
+    else if not isEmpty window.location.hash
+      rootNodeId = window.location.hash[1..]
+    @render
+      rootNodeId: rootNodeId
+      layout: @layout.clone()
+      historyAction: false
 
   renderFromClick: (args) ->
     args.historyAction = 'pushState'
@@ -40,21 +40,22 @@ class World
         if isEmpty(nodes)
           window.location = @source.path rootNodeId
         else
-          for node in nodes
-            @add new GraphicNode node.data()
-          for edge in edges
-            @add new GraphicEdge edge.data()
+          graphicNodes = for node in nodes
+            new GraphicNode {node}
+          graphicEdges = for edge in edges
+            new GraphicEdge {edge}
+          for graphicNode in graphicNodes
+            @sceneRoot.addChild graphicNode
+          for graphicEdge in graphicEdges
+            @sceneRoot.addChild graphicEdge
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
             history[historyAction] { rootNodeId }, null, "##{rootNodeId}"
           @layout?.hide()
           @layout?.physics?.active = false
           layout.setWorld @
-          layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
+          layout.render {nodes: graphicNodes, edges: graphicEdges, rootNodeId: rootNodeId ? suggestedRootNodeId}
           @layout = layout
       .catch (error) =>
         console.error error
-
-  add: (famousNode) =>
-    @sceneRoot.addChild famousNode
 
 module.exports = World

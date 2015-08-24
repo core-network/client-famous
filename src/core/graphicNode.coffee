@@ -1,27 +1,23 @@
 famous = require 'famous'
-{json, log, p, pjson} = require 'lightsaber'
-
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
 Vec3 = famous.math.Vec3
 Opacity = famous.components.Opacity
 
+{json, log, p, pjson} = require 'lightsaber'
+nodesphere = require 'nodesphere'
 {sin, cos, sqrt, abs} = Math
 
-class Node extends FamousNode
+class GraphicNode extends FamousNode
   DEFAULT_SIZE: 50
-  PROPS: [
-    'id'
-    'name'
-  ]
+  # PROPS: [
+  #   'id'
+  #   'name'
+  # ]
 
-  constructor: (data) ->
+  constructor: ({@node}) ->
     super
-    @set data
-    @z ?= 0
-    # p args
-    # @set args
-    throw new Error unless @id?
+    throw new Error "Constructor arg 'node' must a Nodesphere Node, got #{json @node}" unless @node instanceof nodesphere.Node
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
@@ -35,7 +31,7 @@ class Node extends FamousNode
     text.setSizeMode 'absolute', 'absolute', 'absolute'
     text.setAbsoluteSize 333, @size
     new DOMElement text,
-      content: @name
+      content: @name()
       opacity: 0.9
       properties:
         color: "#9FDAFF"
@@ -45,10 +41,11 @@ class Node extends FamousNode
         marginLeft: "#{@size}px"
         paddingLeft: "5px"
 
-  set: (data) ->
-    p @PROPS
-    for own key, value of data when key in @PROPS
-      @[key] = value
+  id: -> @node.id()
+
+  name: -> @node.name() or @node.id()
+
+  position: ({ @radius, @angle }) ->
     @z ?= 0
     @angle = 0 if @radius is 0
     if @radius? and @angle?
@@ -99,4 +96,4 @@ class Node extends FamousNode
         @dismount()
         resolve()
 
-module.exports = Node
+module.exports = GraphicNode

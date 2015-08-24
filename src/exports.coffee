@@ -1,9 +1,9 @@
 module.exports =
   core:
-    World: require './core/world'
-    Edge: require './core/graphicEdge'
-    Node: require './core/graphicNode'
     Geometry: require './core/geometry'
+    GraphicEdge: require './core/graphicEdge'
+    GraphicNode: require './core/graphicNode'
+    World: require './core/world'
   layout:
-    Spiral: require './layouts/spiral'
     CoreBubbles: require './layouts/coreBubbles'
+    Spiral: require './layouts/spiral'

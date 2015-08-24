@@ -1,19 +1,20 @@
 famous = require 'famous'
-{json, log, p, pjson} = require 'lightsaber'
-Promise = require 'bluebird'
-
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
 Opacity = famous.components.Opacity
+
+{json, log, p, pjson} = require 'lightsaber'
+Promise = require 'bluebird'
+nodesphere = require 'nodesphere'
 
 {distance, polar, vector} = require '../core/geometry'
 
 {sin, cos, sqrt, abs} = Math
 
-class Edge extends FamousNode
-  constructor: (args) ->
+class GraphicEdge extends FamousNode
+  constructor: ({@edge}) ->
     super
-    @set args
+    throw new Error "Constructor arg 'edge' must a Nodesphere Edge, got #{json @edge}" unless @edge instanceof nodesphere.Edge
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
@@ -21,17 +22,11 @@ class Edge extends FamousNode
     @opacity = new Opacity @
     @element = new DOMElement @
 
-  set: (args) ->
-    {@start, @end} = args
-    throw new Error "Missing start [ID: #{@start?.id}] and/or end [ID: #{@end?.id}] in 'args' " unless @start? and @end?
-    @id = "#{@start.id} -> #{@end.id}"
-
   render: ->
     @setPosition @start.x, @start.y, @start.z-100
     @setRotation 0, 0, polar(vector @start, @end).angle
     @length = distance @start, @end
     @curve = @length / 9
-    # debugger
     @element.setContent @svgCurve()
 
   hide: (transition = {duration: 1000}) ->
@@ -66,4 +61,4 @@ class Edge extends FamousNode
     #   """
     svg.replace /\s+/g, ' '
 
-module.exports = Edge
+module.exports = GraphicEdge

@@ -1,4 +1,4 @@
-# Nodesphere Graph Viz
+# Core Network Viz
 
 Build: [![Circle CI](https://circleci.com/gh/core-network/client-famous/tree/master.svg?style=svg)](https://circleci.com/gh/core-network/client-famous/tree/master)
 

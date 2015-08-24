@@ -1,8 +1,6 @@
 { json, log, p, pjson } = require 'lightsaber'
 { defaults, find, merge } = require 'lodash'
 
-Node = require '../core/graphicNode'
-Edge = require '../core/graphicEdge'
 {rectangular} = require '../core/geometry'
 
 { abs, cos, pow, round, sin, sqrt } = Math
@@ -27,13 +25,13 @@ class SpiralLayout
 
   render: ({@nodes, @edges, rootNodeId}) ->
     rootNode = if rootNodeId
-      find(@nodes, {id: rootNodeId}) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
+      find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
     else
       @nodes[0]
     rootNode.radius = 0
     for node in @nodes when node isnt rootNode
       do (node) =>
-        node.set @nextAvailableLocation()
+        node.position @nextAvailableLocation()
         node.on 'click', (event) =>
           @world.renderFromClick
             layout: @clone()
