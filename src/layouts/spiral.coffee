@@ -30,7 +30,7 @@ class SpiralLayout
       find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
     else
       @nodes[0]
-    rootNode.radius = 0
+    rootNode.position radius: 0
     for node in @nodes when node isnt rootNode
       do (node) =>
         node.position @nextAvailableLocation()

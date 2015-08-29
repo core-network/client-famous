@@ -10,10 +10,6 @@ nodesphere = require 'nodesphere'
 
 class GraphicNode extends FamousNode
   DEFAULT_SIZE: 50
-  # PROPS: [
-  #   'id'
-  #   'name'
-  # ]
 
   constructor: ({@node}) ->
     super
@@ -23,6 +19,8 @@ class GraphicNode extends FamousNode
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
     @opacity = new Opacity @
+    @size ?= @DEFAULT_SIZE
+    @setAbsoluteSize @size, @size, @size
 
     new DOMElement @,
       content: @svgDot()
@@ -43,7 +41,7 @@ class GraphicNode extends FamousNode
 
   id: -> @node.id()
 
-  name: -> @node.name() or @node.id()
+  name: -> @node.name() # or @node.id()
 
   position: ({ @radius, @angle }) ->
     @z ?= 0
@@ -54,8 +52,6 @@ class GraphicNode extends FamousNode
       @y = @radius * sin @angle
     @x ?= 0
     @y ?= 0
-    @size ?= @DEFAULT_SIZE
-    @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
 
   on: (eventType, callback) ->

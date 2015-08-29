@@ -1,3 +1,4 @@
+{json, log, p, pjson} = require 'lightsaber'
 { values } = require 'lodash'
 GraphicNode = require './graphicNode'
 GraphicEdge = require './graphicEdge'
@@ -14,6 +15,7 @@ class Graph
 
   build: (simpleNodes, simpleEdges) ->
     for simpleNode in simpleNodes
+      # p simpleNode
       @_nodes[simpleNode.id()] = new GraphicNode node: simpleNode
     for simpleEdge in simpleEdges
       edge = @_edges[simpleEdge.id()] = new GraphicEdge edge: simpleEdge
