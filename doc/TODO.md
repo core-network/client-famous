@@ -1,11 +1,10 @@
+- refactor pushstate and world.render
 - merge to master (with same or better demo published to gh-pages)
 - morph from one spiral layout to a new one on click
 - tighten up node clicks -- possibly with ghost dom elements with higher z-index
 - world keeps history and allows you to navigate back through history
 - depthTrees
-- make IPFS an adapter  
 - visualize trust networks
-- set up tracker or trello
 - work on layouts
-- launch IPFS server
+- launch public IPFS server
 - semantic crunching

@@ -1,12 +1,9 @@
 module.exports =
-  adaptors:
-    Json: require './adaptor/json'
-    Ipfs: require './adaptor/ipfs'
   core:
-    World: require './core/world'
+    Geometry: require './core/geometry'
     Edge: require './core/edge'
     Node: require './core/node'
-    Geometry: require './core/geometry'
+    World: require './core/world'
   layout:
-    Spiral: require './layouts/spiral'
     CoreBubbles: require './layouts/coreBubbles'
+    Spiral: require './layouts/spiral'

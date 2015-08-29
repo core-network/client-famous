@@ -1,26 +1,26 @@
 famous = require 'famous'
-{json, log, p, pjson} = require 'lightsaber'
-
 DOMElement = famous.domRenderables.DOMElement
 FamousNode = famous.core.Node
 Vec3 = famous.math.Vec3
 Opacity = famous.components.Opacity
 
-#π = Math.PI
+{json, log, p, pjson} = require 'lightsaber'
+nodesphere = require 'nodesphere'
 {sin, cos, sqrt, abs} = Math
 
 class Node extends FamousNode
-  defaultSize: 50
+  DEFAULT_SIZE: 50
 
-  constructor: (args) ->
+  constructor: ({@node}) ->
     super
-    @set args
-    throw new Error unless @id?
+    throw new Error "Constructor arg 'node' must be a Nodesphere Node, got #{json @node}" unless @node instanceof nodesphere.Node
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
     @setSizeMode 'absolute', 'absolute', 'absolute'
     @opacity = new Opacity @
+    @size ?= @DEFAULT_SIZE
+    @setAbsoluteSize @size, @size, @size
 
     new DOMElement @,
       content: @svgDot()
@@ -29,7 +29,7 @@ class Node extends FamousNode
     text.setSizeMode 'absolute', 'absolute', 'absolute'
     text.setAbsoluteSize 333, @size
     new DOMElement text,
-      content: @name
+      content: @name()
       opacity: 0.9
       properties:
         color: "#9FDAFF"
@@ -39,9 +39,11 @@ class Node extends FamousNode
         marginLeft: "#{@size}px"
         paddingLeft: "5px"
 
-  set: (data) ->
-    for own key, value of data
-      @[key] = value
+  id: -> @node.id()
+
+  name: -> @node.name() # or @node.id()
+
+  position: ({ @radius, @angle }) ->
     @z ?= 0
     @angle = 0 if @radius is 0
     if @radius? and @angle?
@@ -50,10 +52,7 @@ class Node extends FamousNode
       @y = @radius * sin @angle
     @x ?= 0
     @y ?= 0
-    @size ?= @defaultSize
-    @setAbsoluteSize @size, @size, @size
     @setPosition @x, @y, @z
-    # debugger
 
   on: (eventType, callback) ->
     @addUIEvent eventType

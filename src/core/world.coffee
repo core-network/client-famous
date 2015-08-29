@@ -3,8 +3,7 @@
 
 famous = require 'famous'
 FamousEngine = famous.core.FamousEngine
-
-# HistoryLayout     = require '../layouts/history'
+Graph = require './graph'
 
 class World
   constructor: ->
@@ -14,14 +13,14 @@ class World
     window.onpopstate = @onpopstate.bind @
 
   onpopstate: (event) ->
-      if event.state?.rootNodeId?
-        rootNodeId = event.state.rootNodeId
-      else if not isEmpty window.location.hash
-        rootNodeId = window.location.hash[1..]
-      @render
-        rootNodeId: rootNodeId
-        layout: @layout.clone()
-        historyAction: false
+    if event.state?.rootNodeId?
+      rootNodeId = event.state.rootNodeId
+    else if not isEmpty window.location.hash
+      rootNodeId = window.location.hash[1..]
+    @render
+      rootNodeId: rootNodeId
+      layout: @layout.clone()
+      historyAction: false
 
   renderFromClick: (args) ->
     args.historyAction = 'pushState'
@@ -30,7 +29,7 @@ class World
   render: ({layout, source, rootNodeId, sourceUri, historyAction}) ->
     @source = source if source?
     historyAction ?= 'replaceState'
-    if isEmpty(rootNodeId)
+    if isEmpty rootNodeId
       @layout = layout if layout?
       return
     @source.fetch {rootNodeId, sourceUri}
@@ -38,19 +37,17 @@ class World
         if isEmpty(nodes)
           window.location = @source.path rootNodeId
         else
-          @add node for node in nodes
-          @add edge for edge in edges
+          graph = Graph.fromNodesphere nodes, edges
+          for element in graph.elements()
+            @sceneRoot.addChild element
           if history.state?.rootNodeId isnt rootNodeId and historyAction isnt false
             history[historyAction] { rootNodeId }, null, "##{rootNodeId}"
           @layout?.hide()
           @layout?.physics?.active = false
           layout.setWorld @
-          layout.render {nodes, edges, rootNodeId: rootNodeId ? suggestedRootNodeId}
+          layout.render {graph, rootNodeId: rootNodeId ? suggestedRootNodeId}
           @layout = layout
       .catch (error) =>
-        alert error
-
-  add: (famousNode) =>
-    @sceneRoot.addChild famousNode
+        console.error error
 
 module.exports = World
