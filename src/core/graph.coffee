@@ -15,10 +15,9 @@ class Graph
 
   build: (simpleNodes, simpleEdges) ->
     for simpleNode in simpleNodes
-      # p simpleNode
       @_nodes[simpleNode.id()] = new GraphicNode node: simpleNode
     for simpleEdge in simpleEdges
-      edge = @_edges[simpleEdge.id()] = new GraphicEdge edge: simpleEdge
+      edge       = @_edges[simpleEdge.id()] = new GraphicEdge edge: simpleEdge
       edge.start = @_nodes[simpleEdge.start.id()]
       edge.end   = @_nodes[simpleEdge.end.id()]
 
