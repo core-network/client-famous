@@ -31,13 +31,14 @@ class SpiralLayout
     else
       @nodes[0]
     rootNode.position radius: 0
+
     for node in @nodes when node isnt rootNode
       do (node) =>
         node.position @nextAvailableLocation()
         node.on 'click', (event) =>
           @world.renderFromClick
             layout: @clone()
-            rootNodeId: node.id
+            rootNodeId: node.id()
 
     for edge in @edges
       edge.render()

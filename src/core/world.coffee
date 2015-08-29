@@ -5,8 +5,6 @@ famous = require 'famous'
 FamousEngine = famous.core.FamousEngine
 Graph = require './graph'
 
-# HistoryLayout     = require '../layouts/history'
-
 class World
   constructor: ->
     FamousEngine.init()
@@ -31,7 +29,7 @@ class World
   render: ({layout, source, rootNodeId, sourceUri, historyAction}) ->
     @source = source if source?
     historyAction ?= 'replaceState'
-    if isEmpty(rootNodeId)
+    if isEmpty rootNodeId
       @layout = layout if layout?
       return
     @source.fetch {rootNodeId, sourceUri}
