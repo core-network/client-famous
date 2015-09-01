@@ -5,7 +5,7 @@ Opacity = famous.components.Opacity
 
 {json, log, p, pjson} = require 'lightsaber'
 Promise = require 'bluebird'
-nodesphere = require 'nodesphere'
+sphere = require 'nodesphere'
 
 {distance, polar, vector} = require '../core/geometry'
 
@@ -14,7 +14,7 @@ nodesphere = require 'nodesphere'
 class Edge extends FamousNode
   constructor: ({@edge}) ->
     super
-    throw new Error "Constructor arg 'edge' must a Nodesphere Edge, got #{json @edge}" unless @edge instanceof nodesphere.Edge
+    throw new Error "Constructor arg 'edge' must a Nodesphere Edge, got #{json @edge}" unless @edge instanceof sphere.Edge
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5

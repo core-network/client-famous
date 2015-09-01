@@ -1,5 +1,5 @@
 { json, log, p, pjson } = require 'lightsaber'
-{ defaults, find, merge } = require 'lodash'
+{ defaults, find, map, merge } = require 'lodash'
 
 {rectangular} = require '../core/geometry'
 
@@ -27,7 +27,7 @@ class SpiralLayout
     @nodes = graph.nodes()
     @edges = graph.edges()
     rootNode = if rootNodeId
-      find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in nodes: #{pjson @nodes}"
+      find(@nodes, (node) -> node.id() is rootNodeId) ? throw new Error "node wih ID #{rootNodeId} not found in node IDs: #{pjson map @nodes, (node) -> node.id()}"
     else
       @nodes[0]
     rootNode.position radius: 0

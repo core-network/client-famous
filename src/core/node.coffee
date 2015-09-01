@@ -5,7 +5,7 @@ Vec3 = famous.math.Vec3
 Opacity = famous.components.Opacity
 
 {json, log, p, pjson} = require 'lightsaber'
-nodesphere = require 'nodesphere'
+sphere = require 'nodesphere'
 {sin, cos, sqrt, abs} = Math
 
 class Node extends FamousNode
@@ -13,7 +13,7 @@ class Node extends FamousNode
 
   constructor: ({@node}) ->
     super
-    throw new Error "Constructor arg 'node' must be a Nodesphere Node, got #{json @node}" unless @node instanceof nodesphere.Node
+    throw new Error "Constructor arg 'node' must be a Nodesphere Node, got #{json @node}" unless @node instanceof sphere.Node
     @setOrigin 0.5, 0.5, 0.5
     @setMountPoint 0.5, 0.5, 0.5
     @setAlign 0.5, 0.5, 0.5
