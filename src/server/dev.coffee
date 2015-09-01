@@ -27,8 +27,8 @@ startBrowserSync = ->
       middleware: proxyIpfsCalls
 
 proxyIpfsCalls = (req, res, next) ->
-  req.headers.host = IPFS
-  req.headers.referer = "#{IPFS}/ipfs/"
+  # req.headers.host = IPFS
+  # req.headers.referer = "#{IPFS}/ipfs/"
   pattern = /// ^/(ipfs|api)/.+$ ///
   if req.url.match pattern
     proxyPath = req.url.match(pattern)[0]
