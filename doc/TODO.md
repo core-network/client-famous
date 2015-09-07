@@ -1,3 +1,8 @@
+- listing large dir (geoip root) fails:
+  - IPFS itself barfs on http://gateway.ipfs.io/ipfs/QmQQ3BUpPjgYiTdhp4H9YWSCtoFXs8t91njhpvXNNLd3yB
+  - GET http://gateway.ipfs.io/ipfs/QmS2HL9v5YeKgQkkWMvs1EMnFtUowTEdFfSSeMT4pos1e6/bundle.js net::ERR_CONTENT_LENGTH_MISMATCH (all over the place)
+- nodes disappear after loading http://localhost:8080/ipfs/QmVKFoisa75PALvkHte6AdA8zVej8xrQ4rmT2kHQF3Sbu3/#QmbHJUHDovCKoZQazGCFVrXGA9zuQJ7NokqD5vRYcYevDN
+- "loading" icon
 - IPFS hash text box should not force huge width
 - refactor pushstate and world.render
 - merge to master (with same or better demo published to gh-pages)

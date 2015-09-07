@@ -51,6 +51,7 @@ body {
   padding: 10px;
   position: relative;
   z-index: 1;
+  width: 90%;
 }
 .nodesphere-search input {
   background: transparent;
@@ -67,7 +68,7 @@ body {
   margin: 0;
   padding: 0 10px;
   text-shadow: 0 -1px 0 #000;
-  width: 1500px;
+  width: 100%;
 }
 .ie .nodesphere-search input {
   line-height: 50px;
